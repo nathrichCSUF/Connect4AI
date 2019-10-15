@@ -18,7 +18,7 @@ class Slot:
     def __init__(self, screen):
         self.screen = screen
         self.state = "black"  # String holding state of coin, is it red, yellow, or black(empty)
-        self.image = pygame.image.load_extended("")
+        self.image = pygame.image.load_extended("black.png")
         self.rect = self.image.get_rect()
 
     def change_state(self, color):  # Change color of coin

@@ -32,3 +32,7 @@ class Board:
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
+
+    def update_slots(self): #update the board
+        for slots in self.grid:
+            slots.blit();
