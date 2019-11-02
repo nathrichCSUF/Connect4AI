@@ -18,6 +18,7 @@ from board import Board
 class Game:
     #Background Color
     BLACK = (0, 0, 0)
+    BLUE = (0, 126, 231)
     def __init__(self):
         pygame.init()  # initialize pygame
 
@@ -57,11 +58,14 @@ class Game:
                         #print("Player moved right!")
                         self.game_board.move_button("right")
                         pygame.display.update()
+                    elif event.key == pygame.K_q:
+                        pygame.quit()
+                        quit()
                     # can be made in board
 
 
     def update_screen(self):
-        self.screen.fill(game.BLACK)
+        self.screen.fill(game.BLUE)
         #self.game_board.blit() # call gameboard
         pygame.display.update() # update the entire screen = flip
                                         # display.update only updates 

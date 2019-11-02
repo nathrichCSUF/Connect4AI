@@ -30,7 +30,7 @@ class Board:
         self.place_board_slots()
         self.grid = [[sl.Slot(self.screen) for c in range(columns)] for r in range(rows)]
         self.buttonPos = (0,600)
-        self.rowPos = [100,100,100,100,100,100,100]
+        self.rowPos = [95,95,95,95,95,95,95]
         # 2D Array Representing all Slots in Game Board
 
 
