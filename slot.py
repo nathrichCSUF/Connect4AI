@@ -28,16 +28,8 @@ class Slot:
     def set_slot_position(self, x, y):  # Set position of slot within the grid
         self.rect.x = x
         self.rect.y = y
-        #print("slot position x: " + str(x) + " y: " + str(y))
-
-    def get_slot_position_x(self):
-        return self.rect.x
-
-    def get_slot_position_y(self):
-        return self.rect.y
 
     # Blit Coin to Screen
     def blit(self):  
-        #print(str(self.rect) + " < - blit coin")
         self.screen.blit(self.image, self.rect)
 
