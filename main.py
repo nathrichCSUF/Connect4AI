@@ -18,7 +18,7 @@ from board import Board
 class Game:
     #Background Color
     BLACK = (0, 0, 0)
-    BLUE = (0, 126, 231)
+    BLUE = (0, 126, 231) # 007EE7 hex number
     def __init__(self):
         pygame.init()  # initialize pygame
 
@@ -31,7 +31,7 @@ class Game:
         self.update_screen()            #initialize window 
         self.game_board.load_board()
         pygame.display.update()
-        self.game_board.check_win()
+       
         gameover = False                # play until game is done
         while not gameover:
             
@@ -43,20 +43,21 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_w:
                         #print("player decided to place here")
-                        self.game_board.move(game.turn)
-                        self.change_turn()
-                        pygame.display.update()
-                        self.game_board.check_win()
-                        pygame.display.update()
+                        if self.game_board.check_valid_move():
+                            self.game_board.move(game.turn)
+                            pygame.display.update()
+                            self.game_board.check_win(game.turn)
+                            pygame.display.update()
+                            self.change_turn()
                     elif event.key == pygame.K_a:
                         #print("Player moved left!")
-                        self.game_board.move_button("left")
+                        self.game_board.move_select_button("left")
                         pygame.display.update()
                     elif event.key == pygame.K_s:
                         print("Player knowns nothing")
                     elif event.key == pygame.K_d:
                         #print("Player moved right!")
-                        self.game_board.move_button("right")
+                        self.game_board.move_select_button("right")
                         pygame.display.update()
                     elif event.key == pygame.K_q:
                         pygame.quit()
