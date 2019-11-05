@@ -74,9 +74,6 @@ class Board:
     def move(self, turn):
         # need to check valid move before moving
         print("trying to move: " + str(self.button_position) + str(self.rows_position[self.button_position]))
-        
-        slot = self.grid[0][5]
-        
         slot = self.grid[self.rows_position[self.button_position]][self.button_position]
         slot.change_state(turn)
         slot.blit()
