@@ -22,6 +22,7 @@ class Board:
         self.screen_rect = screen.get_rect()
         self.background = pygame.image.load("outline.png")    # might be used for the background?
         self.select_button = pygame.image.load("button.png")
+        self.select_button = pygame.transform.scale(self.select_button, (96, 92))
         self.trans = pygame.image.load("trans.png")
         self.winhigh = pygame.image.load("win.png")
         self.rect = self.background.get_rect()                         # dimensions of image
@@ -30,7 +31,7 @@ class Board:
         self.place_board_slots()
         self.grid = [[sl.Slot(self.screen) for c in range(columns)] for r in range(rows)]
         self.buttonPos = (0,600)
-        self.rowPos = [100,100,100,100,100,100,100]
+        self.rowPos = [95,95,95,95,95,95,95]
         # 2D Array Representing all Slots in Game Board
 
 
