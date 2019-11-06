@@ -13,7 +13,8 @@ Authors:
 
 import pygame
 from board import Board
-
+from settings import Settings
+from menu import Menu
 
 class Game:
     #Background Color
@@ -24,51 +25,64 @@ class Game:
 
         self.screen = pygame.display.set_mode((696, 700))  # screen size
         self.game_board = Board(self.screen)               # initialize Game board with screen size
+        self.settings = Settings()
+        self.menu = Menu(self.screen)
         self.turn = "red"
 
     def play(self):
 
-        self.update_screen()            #initialize window 
-        self.game_board.load_board()
-        pygame.display.update()
-       
+
+
         gameover = False                # play until game is done
         while not gameover:
-            
-            for event in pygame.event.get(): # Events from player
+            if self.settings.gameActive:
+                self.update_screen()  # initialize window
+                self.game_board.load_board()
+                for event in pygame.event.get(): # Events from player
 
-                if event.type == pygame.QUIT: # Player chose to quit
-                    pygame.quit()
-                    quit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_w:
-                        #print("player decided to place here")
-                        if self.game_board.check_valid_move():
-                            self.game_board.move(game.turn)
-                            pygame.display.update()
-                            self.game_board.check_win(game.turn)
-                            pygame.display.update()
-                            self.change_turn()
-                    elif event.key == pygame.K_a:
-                        #print("Player moved left!")
-                        self.game_board.move_select_button("left")
-                        pygame.display.update()
-                    elif event.key == pygame.K_s:
-                        print("Player knowns nothing")
-                    elif event.key == pygame.K_d:
-                        #print("Player moved right!")
-                        self.game_board.move_select_button("right")
-                        pygame.display.update()
-                    elif event.key == pygame.K_q:
+                    if event.type == pygame.QUIT: # Player chose to quit
                         pygame.quit()
                         quit()
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_w:
+                            #print("player decided to place here")
+                            if self.game_board.check_valid_move():
+                                self.game_board.move(game.turn)
+                                pygame.display.update()
+                                self.game_board.check_win(game.turn)
+                                pygame.display.update()
+                                self.change_turn()
+                        elif event.key == pygame.K_a:
+                            #   print("Player moved left!")
+                            self.game_board.move_select_button("left")
+                            pygame.display.update()
+                        elif event.key == pygame.K_s:
+                            print("Player knowns nothing")
+                        elif event.key == pygame.K_d:
+                            #   print("Player moved right!")
+                            self.game_board.move_select_button("right")
+                            pygame.display.update()
+                        elif event.key == pygame.K_q:
+                            pygame.quit()
+                            quit()
+            else:
+                self.menu.draw_menu()
+                pygame.display.update()
+                for event in pygame.event.get(): # Events from player
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        self.menu.checkForPlayButtonClick(mouse_x,mouse_y,self.settings)
+
+
                     # can be made in board
+
 
 
     def update_screen(self):
         self.screen.fill(game.BLUE)
         #self.game_board.blit() # call gameboard
-        pygame.display.update() # update the entire screen = flip
+        #pygame.display.update() # update the entire screen = flip
                                         # display.update only updates 
                                         # the portion of the screen 
                                         # that was changed
