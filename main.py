@@ -36,8 +36,7 @@ class Game:
         gameover = False                # play until game is done
         while not gameover:
             if self.settings.gameActive:
-                self.update_screen()  # initialize window
-                self.game_board.load_board()
+
                 for event in pygame.event.get(): # Events from player
 
                     if event.type == pygame.QUIT: # Player chose to quit
@@ -73,6 +72,9 @@ class Game:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         mouse_x, mouse_y = pygame.mouse.get_pos()
                         self.menu.checkForPlayButtonClick(mouse_x,mouse_y,self.settings)
+                        if self.settings.gameActive:
+                            self.update_screen()  # initialize window
+                            self.game_board.load_board()
 
 
                     # can be made in board
@@ -82,7 +84,8 @@ class Game:
     def update_screen(self):
         self.screen.fill(game.BLUE)
         #self.game_board.blit() # call gameboard
-        #pygame.display.update() # update the entire screen = flip
+        self.game_board.load_board()
+        pygame.display.update() # update the entire screen = flip
                                         # display.update only updates 
                                         # the portion of the screen 
                                         # that was changed
