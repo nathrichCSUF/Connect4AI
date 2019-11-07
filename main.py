@@ -12,6 +12,7 @@ Authors:
 """
 
 import pygame
+import time
 from board import Board
 from settings import Settings
 from menu import Menu
@@ -49,6 +50,7 @@ class Game:
                                 pygame.display.update()
                                 if self.game_board.check_win(game.turn):
                                     pygame.display.update()
+                                    time.sleep(5)
                                     self.settings.gameActive = False
                                     pygame.mouse.set_visible(True)
                                 self.change_turn()
