@@ -18,11 +18,11 @@ class Menu:
         self.screen = screen
         self.screen_rect = screen.get_rect()
         # self.title = pygame.image.load_extended("images/connect4_logo.png")
-        self.pvpButton = pygame.image.load_extended("images/pvp.png")
+        self.pvpButton = pygame.image.load("images/pvp.png")
         self.pvpButton = pygame.transform.scale(self.pvpButton, (460, 115))
         self.pvaiButton = pygame.image.load("images/pvai.png")
         self.pvaiButton = pygame.transform.scale(self.pvaiButton, (460, 115))
-        self.background = pygame.image.load_extended("images/bg-c4.png")
+        self.background = pygame.image.load("images/bg-c4.png")
         self.background = pygame.transform.scale(self.background, (696, 700))
 
         # self.titlerect = self.title.get_rect()
