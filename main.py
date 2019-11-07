@@ -12,7 +12,7 @@ Authors:
 """
 
 import pygame
-import time
+
 from board import Board
 from settings import Settings
 from menu import Menu
@@ -23,7 +23,7 @@ class Game:
     BLUE = (0, 126, 231) # 007EE7 hex number
     def __init__(self):
         pygame.init()  # initialize pygame
-
+        self.red_selector = pygame.image.load("button-red.png")
         self.screen = pygame.display.set_mode((696, 700))  # screen size
         self.game_board = Board(self.screen)               # initialize Game board with screen size
         self.settings = Settings()
@@ -33,9 +33,18 @@ class Game:
     def play(self):
 
 
-
+        won = False
         gameover = False                # play until game is done
         while not gameover:
+            if won:
+                okten = 100000
+                while okten > 0:
+                    print(str(okten))
+                    okten = okten -1
+                self.settings.toggle_game_active()
+                pygame.mouse.set_visible(True)
+                won = False
+
             if self.settings.gameActive:
                 for event in pygame.event.get(): # Events from player
 
@@ -48,11 +57,12 @@ class Game:
                             if self.game_board.check_valid_move():
                                 self.game_board.move(game.turn)
                                 pygame.display.update()
-                                if self.game_board.check_win(game.turn):
+
+                                if self.game_board.check_win(game.turn): 
                                     pygame.display.update()
-                                    time.sleep(5)
-                                    self.settings.gameActive = False
-                                    pygame.mouse.set_visible(True)
+                                    pygame.event.pump()
+                                    won = True
+                                    
                                 self.change_turn()
                         elif event.key == pygame.K_a:
                             #   print("Player moved left!")
