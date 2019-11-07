@@ -25,6 +25,9 @@ class Slot:
         self.state = color
         self.image = pygame.image.load(self.state + ".png")
 
+    def reset(self):
+        self.state = "black"
+        
     def set_slot_position(self, x, y):  # Set position of slot within the grid
         self.rect.x = x
         self.rect.y = y
