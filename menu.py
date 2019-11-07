@@ -20,6 +20,7 @@ class Menu:
         self.title = pygame.image.load_extended("images/connect4_logo.png")
         self.playButton = pygame.image.load_extended("images/play_button.png")
         self.playButton = pygame.transform.scale(self.playButton, (96, 92))
+        self.background = pygame.image.load_extended("images/bg-c4.png")
 
         self.titlerect = self.title.get_rect()
         self.playrect = self.playButton.get_rect()
@@ -30,7 +31,7 @@ class Menu:
         self.playrect.center = self.screen_rect.center
 
     def draw_menu(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background, (0,0))
         self.screen.blit(self.title, self.titlerect)
         self.screen.blit(self.playButton, self.playrect)
 
