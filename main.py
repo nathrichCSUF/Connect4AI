@@ -76,8 +76,9 @@ class Game:
                         self.menu.checkForPlayButtonClick(mouse_x,mouse_y,self.settings)
                         if self.settings.gameActive:
                             self.update_screen()  # initialize window
-                            self.game_board.load_board()
                             self.game_board.reset_game()
+                            self.game_board.load_board()
+                            
 
 
                     # can be made in board
