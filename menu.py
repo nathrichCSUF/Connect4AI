@@ -23,21 +23,24 @@ class Menu:
         self.pvaiButton = pygame.image.load("images/pvai.png")
         self.pvaiButton = pygame.transform.scale(self.pvaiButton, (460, 115))
         self.background = pygame.image.load_extended("images/bg-c4.png")
+        self.background = pygame.transform.scale(self.background, (696, 700))
 
         # self.titlerect = self.title.get_rect()
         self.pvprect = self.pvpButton.get_rect()
         self.pvairect = self.pvaiButton.get_rect()
-        # self.titlerect.center = self.screen_rect.center
-        # self.titlerect.top = self.screen_rect.top
+        self.pvprect.center = self.screen_rect.center
+        self.pvprect.top = 150
+        self.pvairect.center = self.screen_rect.center
+        self.pvairect.top = 300
 
     def draw_menu(self):
         self.screen.blit(self.background, (0,0))
         # self.screen.blit(self.title, self.titlerect)
-        self.screen.blit(self.pvpButton, (20,300))
-        self.screen.blit(self.pvaiButton, (20,450))
+        self.screen.blit(self.pvpButton, self.pvprect)
+        self.screen.blit(self.pvaiButton, self.pvairect)
 
     def checkForPlayButtonClick(self,mouseX,mouseY, settings):
-        button_clicked = self.playrect.collidepoint(mouseX, mouseY) # check if mouse button clicked play button
+        button_clicked = self.pvprect.collidepoint(mouseX, mouseY) # check if mouse button clicked play button
 
         if button_clicked and not settings.gameActive:
             pygame.mouse.set_visible(False)
