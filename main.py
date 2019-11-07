@@ -36,7 +36,6 @@ class Game:
         gameover = False                # play until game is done
         while not gameover:
             if self.settings.gameActive:
-
                 for event in pygame.event.get(): # Events from player
 
                     if event.type == pygame.QUIT: # Player chose to quit
@@ -48,8 +47,10 @@ class Game:
                             if self.game_board.check_valid_move():
                                 self.game_board.move(game.turn)
                                 pygame.display.update()
-                                self.game_board.check_win(game.turn)
-                                pygame.display.update()
+                                if self.game_board.check_win(game.turn):
+                                    pygame.display.update()
+                                    self.settings.gameActive = False
+                                    pygame.mouse.set_visible(True)
                                 self.change_turn()
                         elif event.key == pygame.K_a:
                             #   print("Player moved left!")
@@ -65,6 +66,7 @@ class Game:
                             pygame.quit()
                             quit()
             else:
+                
                 self.menu.draw_menu()
                 pygame.display.update()
                 for event in pygame.event.get(): # Events from player
@@ -75,6 +77,7 @@ class Game:
                         if self.settings.gameActive:
                             self.update_screen()  # initialize window
                             self.game_board.load_board()
+                            self.game_board.reset_game()
 
 
                     # can be made in board
