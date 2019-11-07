@@ -34,7 +34,8 @@ class Board:
         self.select_button = pygame.transform.scale(self.select_button, (96, 92))
         self.clear_select_button = pygame.image.load("clear_select_button.png")
         self.clear_select_button= pygame.transform.scale(self.clear_select_button, (96, 92))
-        self.winhigh = pygame.image.load("win.png")
+        self.winhigh = pygame.image.load("win-star.png")
+        self.winhigh= pygame.transform.scale(self.winhigh, (96, 92))
         #dimensions and grid                       
         rows = 6
         columns = 7
@@ -42,6 +43,21 @@ class Board:
         self.button_position = 0 # 0-6 column of where button is
         self.rows_position = [0, 0, 0, 0, 0, 0, 0] # 0-5 row of where coin on 7 columns
         self.debug_mode = 0
+        self.define_slot_positions()
+
+    def define_slot_positions(self):
+        for i in range(6):
+            for j in range(7):
+                self.grid[i][j].set_slot_position((100*j)+6,(500-100*i+50)+6)
+    
+    def reset_game(self):
+        self.reset_slots
+        self.rows_position = [0, 0, 0, 0, 0, 0, 0]
+
+    def reset_slots(self):
+        for i in range(6):
+            for j in range(7):
+                self.grid[i][j].reset
 
     # loads board slots, defines slots, and places select button
     def load_board(self):
@@ -50,11 +66,7 @@ class Board:
         for i in range(7):
             for j in range(6):
                 self.screen.blit(self.background,(100*i,100*j+50))
-
-        for i in range(6):
-            for j in range(7):
-                self.grid[i][j].set_slot_position((100*j)+6,(500-100*i+50)+6)
-        #loading Button the button
+        #loading selector Button 
         self.screen.blit(self.select_button,(self.button_position,-25)) 
 
     # Checks if there is an available space on the column
@@ -107,6 +119,7 @@ class Board:
                             self.screen.blit(self.winhigh,self.grid[i+1][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i+2][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i+3][j].rect)
+                            return True
         #check 4 across 
         for i in range(6):
             for j in range(4):
@@ -119,6 +132,7 @@ class Board:
                             self.screen.blit(self.winhigh,self.grid[i][j+1].rect)
                             self.screen.blit(self.winhigh,self.grid[i][j+2].rect)
                             self.screen.blit(self.winhigh,self.grid[i][j+3].rect)
+                            return True
                             
        # check diagnoal to the right
         for i in range(3):
@@ -131,7 +145,8 @@ class Board:
                             self.screen.blit(self.winhigh,self.grid[i][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i+1][j+1].rect)
                             self.screen.blit(self.winhigh,self.grid[i+2][j+2].rect)
-                            self.screen.blit(self.winhigh,self.grid[i+3][j+3].rect)                     
+                            self.screen.blit(self.winhigh,self.grid[i+3][j+3].rect)  
+                            return True                   
         
         # check diagnol to the left
         for i in range(3):
@@ -145,3 +160,7 @@ class Board:
                             self.screen.blit(self.winhigh,self.grid[5-i-1][j+1].rect)
                             self.screen.blit(self.winhigh,self.grid[5-i-2][j+2].rect)
                             self.screen.blit(self.winhigh,self.grid[5-i-3][j+3].rect)
+                            return True
+        return False
+
+
