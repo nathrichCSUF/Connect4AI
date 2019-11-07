@@ -32,7 +32,7 @@ class Menu:
         self.playrect.center = self.screen_rect.center
 
     def draw_menu(self):
-        self.screen.blit(self.background, (0,0))
+        self.screen.blit(self.background, self.screen_rect)
         # self.screen.blit(self.title, self.titlerect)
         self.screen.blit(self.playButton, self.playrect)
 
