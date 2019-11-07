@@ -51,13 +51,16 @@ class Board:
                 self.grid[i][j].set_slot_position((100*j)+6,(500-100*i+50)+6)
     
     def reset_game(self):
-        self.reset_slots
+        print("reset game")
+        self.reset_slots()
         self.rows_position = [0, 0, 0, 0, 0, 0, 0]
+        self.button_position = 0
 
     def reset_slots(self):
+        print("reset slots")
         for i in range(6):
             for j in range(7):
-                self.grid[i][j].reset
+                self.grid[i][j].reset()
 
     # loads board slots, defines slots, and places select button
     def load_board(self):
@@ -113,7 +116,7 @@ class Board:
                 if self.grid[i][j].state is not "black":
                     if self.grid[i][j].state is turn:
                         if self.grid[i+1][j].state is turn and self.grid[i+2][j].state is turn and  self.grid[i+3][j].state is turn:
-                            print(str(turn) + " wins")
+                            print(str(turn) + " wins up")
                             # highlight win spaces
                             self.screen.blit(self.winhigh,self.grid[i][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i+1][j].rect)
@@ -126,7 +129,7 @@ class Board:
                 if self.grid[i][j].state is not "black":
                     if self.grid[i][j].state is turn:
                         if self.grid[i][j+1].state is turn and self.grid[i][j+2].state is turn and  self.grid[i][j+3].state is turn:
-                            print(str(turn) + " wins")
+                            print(str(turn) + " wins across")
                             # highlight win spaces
                             self.screen.blit(self.winhigh,self.grid[i][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i][j+1].rect)
@@ -140,7 +143,7 @@ class Board:
                 if self.grid[i][j].state is not "black":
                     if self.grid[i][j].state is turn:
                         if self.grid[i+1][j+1].state is turn and self.grid[i+2][j+2].state is turn and  self.grid[i+3][j+3].state is turn:
-                            print(str(turn) + " wins")
+                            print(str(turn) + " wins diag right")
                             # highlight win spaces
                             self.screen.blit(self.winhigh,self.grid[i][j].rect)
                             self.screen.blit(self.winhigh,self.grid[i+1][j+1].rect)
@@ -154,7 +157,7 @@ class Board:
                 if self.grid[5-i][j].state is not "black":
                     if self.grid[5-i][j].state is turn:
                         if self.grid[5-i-1][j+1].state is turn and self.grid[5-i-2][j+2].state is turn and  self.grid[5-i-3][j+3].state is turn:
-                            print(str(turn) + " wins")
+                            print(str(turn) + " wins diag left")
                             # highlight win spaces
                             self.screen.blit(self.winhigh,self.grid[5-i][j].rect)
                             self.screen.blit(self.winhigh,self.grid[5-i-1][j+1].rect)
