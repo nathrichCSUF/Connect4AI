@@ -78,12 +78,15 @@ class Game:
                             pygame.quit()
                             quit()
             else:
-                
+
                 self.menu.draw_menu()
                 pygame.display.update()
                 for event in pygame.event.get(): # Events from player
-
-                    if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.type == pygame.QUIT: # Player chose to quit
+                        pygame.quit()
+                        quit()
+                        gameover = True
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
                         mouse_x, mouse_y = pygame.mouse.get_pos()
                         self.menu.checkForPlayButtonClick(mouse_x,mouse_y,self.settings)
                         if self.settings.gameActive:
