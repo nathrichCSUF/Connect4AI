@@ -14,10 +14,11 @@ Authors:
 
 class Settings:
     def __init__(self):
-        self.gameActive = False
+        self.gameActive = "menu"
 
     def toggle_game_active(self):  # Toggle if game is active
-        if not self.gameActive: # if false
-            self.gameActive = True
-        else:
-            self.gameActive = False
+        #if not self.gameActive: # if false
+        #    self.gameActive = True
+        #else:
+        #    self.gameActive = False
+        self.gameActive = "menu"

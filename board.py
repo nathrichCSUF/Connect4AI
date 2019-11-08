@@ -55,11 +55,12 @@ class Board:
                 self.grid[i][j].set_slot_position((100*j)+6,(500-100*i+50)+6)
     
     def reset_game(self):
-        print("reset game")
+        #print("reset game")
         self.reset_slots()
         self.rows_position = [0, 0, 0, 0, 0, 0, 0]
         self.button_position = 0
         self.move_count = 0
+        self.turn="red"
 
     def change_selector_color(self, color):
         if color is "yellow":
@@ -69,7 +70,7 @@ class Board:
         pygame.display.update()
 
     def reset_slots(self):
-        print("reset slots")
+        #print("reset slots")
         for i in range(6):
             for j in range(7):
                 self.grid[i][j].reset()
@@ -107,14 +108,15 @@ class Board:
 
     # places a chip in the column then updates the rows position
     def move(self):
+        print("in move: " + str(self.button_position))
         # need to check valid move before moving
         self.move_count = self.move_count + 1
-        print("trying to move: " + str(self.button_position) + str(self.rows_position[self.button_position]))
+        #print("trying to move: " + str(self.button_position) + str(self.rows_position[self.button_position]))
         slot = self.grid[self.rows_position[self.button_position]][self.button_position]
         slot.change_state(self.turn)
         slot.blit()
         self.rows_position[self.button_position] += 1
-        print(str(self.move_count))
+        #print(str(self.move_count))
 
     # select button with checks on bounds
     def move_select_button(self,direction):

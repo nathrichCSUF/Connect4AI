@@ -13,6 +13,7 @@ Authors:
 
 import pygame
 import time
+import random
 from board import Board
 from settings import Settings
 from menu import Menu
@@ -29,7 +30,7 @@ class Game:
         self.settings = Settings()
         self.menu = Menu(self.screen)
         #self.turn = "red"
-
+        self.player = 1
     def play(self):
 
 
@@ -37,7 +38,7 @@ class Game:
         gameover = False                # play until game is done
         while not gameover:
 
-            if self.settings.gameActive:
+            if self.settings.gameActive is "pvp":
                 for event in pygame.event.get(): # Events from player
 
                     if event.type == pygame.QUIT: # Player chose to quit
@@ -77,8 +78,109 @@ class Game:
                         elif event.key == pygame.K_q:
                             pygame.quit()
                             quit()
-            else:
+            elif self.settings.gameActive is "pvai":
+                if self.player:
+                    for event in pygame.event.get(): # Events from player
 
+                        if event.type == pygame.QUIT: # Player chose to quit
+                            pygame.quit()
+                            quit()
+                        elif event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_w:
+                                #print("player decided to place here")
+                                if self.game_board.check_valid_move():
+                                    self.game_board.move()
+                                    pygame.display.update()
+                                    pygame.event.pump() 
+                                    if self.game_board.check_win(): 
+                                        pygame.display.update()
+                                        pygame.event.pump()
+                                        time.sleep(2)
+                                        self.settings.toggle_game_active()
+                                        pygame.mouse.set_visible(True)
+                                        #blit win thing too?
+                                    if self.game_board.move_count is 42:
+                                        pygame.event.pump()                                    #blit tie game
+                                        time.sleep(2)
+                                        self.settings.toggle_game_active()
+                                        pygame.mouse.set_visible(True)
+
+                                    self.game_board.change_turn()
+                                    self.player = 0
+                            elif event.key == pygame.K_a:
+                                #   print("Player moved left!")
+                                self.game_board.move_select_button("left")
+                                pygame.display.update()
+                            elif event.key == pygame.K_s:
+                                print("Player knowns nothing")
+                            elif event.key == pygame.K_d:
+                                #   print("Player moved right!")
+                                self.game_board.move_select_button("right")
+                                pygame.display.update()
+                            elif event.key == pygame.K_q:
+                                pygame.quit()
+                                quit()
+                else:
+                    print("ai")
+                    #ai
+                    moved = False
+                    while not moved:
+                        
+                        move = random.randint(0,6)
+
+                        while self.game_board.button_position < move:
+                            self.game_board.move_select_button("right")
+                            pygame.event.pump()
+                            pygame.display.update()
+                            print("right")
+                            x = 10000000
+                            while(x):
+                                x = x-1
+                        while self.game_board.button_position > move:
+                            self.game_board.move_select_button("left")
+                            pygame.event.pump()
+                            pygame.display.update()
+                            print("left")
+                            x = 10000000
+                            while(x):
+                                x = x-1
+                        if self.game_board.check_valid_move():
+                            x = 10000000
+                            while(x):
+                                x = x-1
+                            self.game_board.move()
+                            pygame.event.pump()
+                            pygame.display.update()
+                            x = 10000000
+                            while(x):
+                                x = x-1
+                            moved = True
+
+                    if self.game_board.check_win(): 
+                        pygame.display.update()
+                        pygame.event.pump()
+                        time.sleep(2)
+                        self.settings.toggle_game_active()
+                        pygame.mouse.set_visible(True)
+                        #blit win thing too?
+                    if self.game_board.move_count is 42:
+                        pygame.event.pump()                                    #blit tie game
+                        time.sleep(2)
+                        self.settings.toggle_game_active()
+                        pygame.mouse.set_visible(True)
+                    pygame.event.pump()
+                    pygame.display.update()
+                    x = 10000000
+                    while(x):
+                        x = x-1
+                    
+                    self.game_board.change_turn()
+                    self.player = 1
+
+
+
+                            
+            else:
                 self.menu.draw_menu()
                 pygame.display.update()
                 for event in pygame.event.get(): # Events from player
@@ -97,8 +199,6 @@ class Game:
 
 
                     # can be made in board
-
-
 
     def update_screen(self):
         self.screen.fill(game.BLUE)

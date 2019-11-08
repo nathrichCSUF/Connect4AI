@@ -40,11 +40,14 @@ class Menu:
         self.screen.blit(self.pvaiButton, self.pvairect)
 
     def checkForPlayButtonClick(self,mouseX,mouseY, settings):
-        button_clicked = self.pvprect.collidepoint(mouseX, mouseY) # check if mouse button clicked play button
-
-        if button_clicked and not settings.gameActive:
+        pvp_clicked = self.pvprect.collidepoint(mouseX, mouseY) # check if mouse button clicked play button
+        pvai_clicked = self.pvairect.collidepoint(mouseX, mouseY)
+        if pvp_clicked:
             pygame.mouse.set_visible(False)
-            settings.gameActive = True
+            settings.gameActive = "pvp"
+
+        if pvai_clicked:
+            settings.gameActive = "pvai"
 
 
         
