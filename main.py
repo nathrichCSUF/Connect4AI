@@ -14,6 +14,7 @@ Authors:
 import pygame
 import time
 import random
+import argparse
 from board import Board
 from settings import Settings
 from menu import Menu
@@ -209,9 +210,15 @@ class Game:
                                         # the portion of the screen 
                                         # that was changed
 
+def get_arguments():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-d", "--debug",
+            type=int,
+            default=0,
+            help="0 for no debug, 1 for debug mode")
+    args = vars(ap.parse_args())
+    return args
 
-       
-
-
+args = get_arguments()
 game = Game()
 game.play()
