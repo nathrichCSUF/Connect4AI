@@ -12,7 +12,7 @@ Authors:
 """
 
 import pygame
-
+import time
 from board import Board
 from settings import Settings
 from menu import Menu
@@ -28,22 +28,14 @@ class Game:
         self.game_board = Board(self.screen)               # initialize Game board with screen size
         self.settings = Settings()
         self.menu = Menu(self.screen)
-        self.turn = "red"
+        #self.turn = "red"
 
     def play(self):
 
 
-        won = False
+       
         gameover = False                # play until game is done
         while not gameover:
-            if won:
-                okten = 100000
-                while okten > 0:
-                    print(str(okten))
-                    okten = okten -1
-                self.settings.toggle_game_active()
-                pygame.mouse.set_visible(True)
-                won = False
 
             if self.settings.gameActive:
                 for event in pygame.event.get(): # Events from player
@@ -55,15 +47,23 @@ class Game:
                         if event.key == pygame.K_w:
                             #print("player decided to place here")
                             if self.game_board.check_valid_move():
-                                self.game_board.move(game.turn)
+                                self.game_board.move()
                                 pygame.display.update()
 
-                                if self.game_board.check_win(game.turn): 
+                                if self.game_board.check_win(): 
                                     pygame.display.update()
                                     pygame.event.pump()
-                                    won = True
-                                    
-                                self.change_turn()
+                                    time.sleep(2)
+                                    self.settings.toggle_game_active()
+                                    pygame.mouse.set_visible(True)
+                                    #blit win thing too?
+                                if self.game_board.move_count is 42:
+                                    pygame.event.pump()                                    #blit tie game
+                                    time.sleep(2)
+                                    self.settings.toggle_game_active()
+                                    pygame.mouse.set_visible(True)
+
+                                self.game_board.change_turn()
                         elif event.key == pygame.K_a:
                             #   print("Player moved left!")
                             self.game_board.move_select_button("left")
@@ -106,11 +106,8 @@ class Game:
                                         # the portion of the screen 
                                         # that was changed
 
-    def change_turn(self):
-        if game.turn is "red":
-            game.turn = "yellow"
-        else:
-            game.turn = "red"
+
+       
 
 
 game = Game()
