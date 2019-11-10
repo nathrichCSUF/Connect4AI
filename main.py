@@ -126,35 +126,35 @@ class Game:
                     #ai
                     moved = False
                     while not moved:
-                        
-                        move = random.randint(0,6)
-
+                        self.game_board.scoreGame()
+                        move = self.game_board.minmax()
+                        print("Minmax Number:" + str(move)) 
                         while self.game_board.button_position < move:
                             self.game_board.move_select_button("right")
                             pygame.event.pump()
                             pygame.display.update()
                             print("right")
-                            x = 10000000
-                            while(x):
-                                x = x-1
+                            #x = 10000000
+                            #while(x):
+                                #x = x-1
                         while self.game_board.button_position > move:
                             self.game_board.move_select_button("left")
                             pygame.event.pump()
                             pygame.display.update()
                             print("left")
-                            x = 10000000
-                            while(x):
-                                x = x-1
+                            #x = 10000000
+                            #while(x):
+                                #x = x-1
                         if self.game_board.check_valid_move():
-                            x = 10000000
-                            while(x):
-                                x = x-1
+                            #x = 10000000
+                            #while(x):
+                                #x = x-1
                             self.game_board.move()
                             pygame.event.pump()
                             pygame.display.update()
-                            x = 10000000
-                            while(x):
-                                x = x-1
+                            #x = 10000000
+                            #while(x):
+                                #x = x-1
                             moved = True
 
                     if self.game_board.check_win(): 
@@ -171,9 +171,9 @@ class Game:
                         pygame.mouse.set_visible(True)
                     pygame.event.pump()
                     pygame.display.update()
-                    x = 10000000
-                    while(x):
-                        x = x-1
+                    #x = 10000000
+                    #while(x):
+                        #x = x-1
                     
                     self.game_board.change_turn()
                     self.player = 1

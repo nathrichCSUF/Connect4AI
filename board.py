@@ -42,12 +42,15 @@ class Board:
         rows = 6
         columns = 7
         self.grid = [ [sl.Slot(self.screen) for c in range(columns)] for r in range(rows)] 
+
         self.button_position = 0 # 0-6 column of where button is
         self.rows_position = [0, 0, 0, 0, 0, 0, 0] # 0-5 row of where coin on 7 columns
         self.debug_mode = 0
         self.define_slot_positions()
         self.turn = "red"
         self.move_count = 0
+        self.oppGrid = [0,0,0,0,0,0,0]
+        self.aiGrid = [0,0,0,0,0,0,0]
 
     def define_slot_positions(self):
         for i in range(6):
@@ -93,12 +96,13 @@ class Board:
         #loading selector Button 
         self.screen.blit(self.red_select_button,(self.button_position,-25)) 
 
+
     # Checks if there is an available space on the column
     def check_valid_move(self):
         if self.debug_mode:
             print("Checking valid move")
         if self.rows_position[self.button_position] < 6:
-            if self.debug_mode:
+            if self.debug_mode:                    
                 print("Space to place!")
             return True
         else:
@@ -199,4 +203,26 @@ class Board:
                             return True
         return False
 
+    def scoreGame(self):
+        self.change_turn()
+        opp = self.turn
+        self.change_turn()
+        print(opp)
+        for i in range(3):
+            for j in range(7):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i][j].state is opp and self.grid[i+1][j].state is opp and self.grid[i+2][j].state is opp:
+                        print(self.grid[i][j].state)
+                        self.oppGrid[j] = -1000
+                        print(str(self.oppGrid[j]) + " Lmao fuck")
 
+    def minmax(self):
+        print(self.oppGrid)
+        for i in range(6):
+            if self.oppGrid[i] == -1000:
+                print("Cucked.")
+                self.oppGrid[i] += 1000
+                return i
+            else:
+                return 3
+        
