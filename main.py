@@ -126,8 +126,7 @@ class Game:
                     #ai
                     moved = False
                     while not moved:
-                        self.game_board.scoreGame()
-                        move = self.game_board.minmax()
+                        move = minimax(self.game_board, 0, False)
                         print("Minmax Number:" + str(move)) 
                         while self.game_board.button_position < move:
                             self.game_board.move_select_button("right")

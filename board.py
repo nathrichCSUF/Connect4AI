@@ -203,26 +203,65 @@ class Board:
                             return True
         return False
 
-    def scoreGame(self):
+    def evalFunction(self):
         self.change_turn()
         opp = self.turn
         self.change_turn()
-        print(opp)
         for i in range(3):
             for j in range(7):
                 if self.grid[i][j].state is not "black":
-                    if self.grid[i][j].state is opp and self.grid[i+1][j].state is opp and self.grid[i+2][j].state is opp:
-                        print(self.grid[i][j].state)
-                        self.oppGrid[j] = -1000
-                        print(str(self.oppGrid[j]) + " Lmao fuck")
-
-    def minmax(self):
-        print(self.oppGrid)
+                    if self.grid[i+1][j].state is turn and self.grid[i+2][j].state is turn and  self.grid[i+3][j].state is turn:
+                        if self.grid[i][j].state is self.turn:
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            return -1000
         for i in range(6):
-            if self.oppGrid[i] == -1000:
-                print("Cucked.")
-                self.oppGrid[i] += 1000
-                return i
-            else:
-                return 3
+            for j in range(4):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i][j+1].state is turn and self.grid[i][j+2].state is turn and  self.grid[i][j+3].state is turn:
+                        if self.grid[i][j].state is self.turn:
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            return -1000
+        return 5
+            
+
+    def minimax(self, depth, isMaxiPlayer):
+        return 1
+        dupBoard = self
+        print("Hi")
+        if self.move_count is 42:
+            return 0
+        score = self.evalFunction()
         
+        if score >= 1000:
+            return score
+        elif score <= -1000:
+            return score
+
+
+        if isMaxiPlayer:
+            bestVal = -1000 
+            for i in range(6):
+                for j in range(7):
+                    if self.grid[i][j].state is not "black":
+                        self.move = j
+                        self.grid[i][j].state = self.turn
+                        self.move()
+                        bestVal = max(bestVal, minimax(self,depth+1, False))
+                        self.grid[i][j].state = "black"
+            return bestVal
+        
+        else:
+            bestVal = 1000
+            for i in range(6):
+                for j in range(7):
+                    if self.grid[i][j].state is not "black":
+                        self.move = j
+                        self.grid[i][j].state = self.turn
+                        self.move()
+                        bestVal = min(bestVal, minimax(self,depth+1, False))
+                        self.grid[i][j].reset()
+            return bestVal
+        return 5
+
