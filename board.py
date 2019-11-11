@@ -112,7 +112,7 @@ class Board:
 
     # places a chip in the column then updates the rows position
     def move(self):
-        print("in move: " + str(self.button_position))
+        #print("in move: " + str(self.button_position))
         # need to check valid move before moving
         self.move_count = self.move_count + 1
         #print("trying to move: " + str(self.button_position) + str(self.rows_position[self.button_position]))
@@ -204,64 +204,90 @@ class Board:
         return False
 
     def evalFunction(self):
+        turn = self.turn
         self.change_turn()
         opp = self.turn
         self.change_turn()
+        print("First Loop")
         for i in range(3):
             for j in range(7):
                 if self.grid[i][j].state is not "black":
-                    if self.grid[i+1][j].state is turn and self.grid[i+2][j].state is turn and  self.grid[i+3][j].state is turn:
+                    if self.grid[i+1][j].state == self.grid[i+2][j].state and self.grid[i+2][j].state == self.grid[i+3][j].state and self.grid[i+1][j].state is not "black" and self.grid[i+2][j].state is not "black" and self.grid[i+3][j].state is not "black":
+                        print(str(self.grid[i][j].state))
+                        print(str(self.grid[i+1][j].state))
+                        print(str(self.grid[i+2][j].state))
+                        print(str(self.grid[i+3][j].state))
+
+
                         if self.grid[i][j].state is self.turn:
                             return 1000
                         elif self.grid[i][j].state is opp:
                             return -1000
+        print("Second")
         for i in range(6):
             for j in range(4):
                 if self.grid[i][j].state is not "black":
-                    if self.grid[i][j+1].state is turn and self.grid[i][j+2].state is turn and  self.grid[i][j+3].state is turn:
+                    if self.grid[i][j+1].state == self.grid[i][j+2].state and self.grid[i][j+2].state == self.grid[i][j+3].state and self.grid[i][j+1].state is not "black" and self.grid[i][j+2].state is not "black" and self.grid[i][j+3].state is not "black":
                         if self.grid[i][j].state is self.turn:
                             return 1000
                         elif self.grid[i][j].state is opp:
                             return -1000
+        print("Third")
+        for i in range(3):
+            for j in range(4):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i+1][j+1].state == self.grid[i+2][j+2].state and self.grid[i+2][j+2].state == self.grid[i+3][j+3].state and self.grid[i+1][j+1].state is not "black" and self.grid[i+2][j+2].state is not "black" and self.grid[i+3][j+3].state is not "black":                     
+                        if self.grid[i][j].state is self.turn:
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            return -1000
+
+        
+        print("Forth")
+        for i in range(3):
+            for j in range(4):
+                if self.grid[5-i][j].state is not "black":
+                    if self.grid[5-i-1][j+1].state == self.grid[5-i-2][j+2].state and self.grid[5-i-2][j+2].state == self.grid[5-i-3][j+3].state is turn  and self.grid[5-i-1][j+1].state is not "black" and self.grid[5-i-2][j+2].state is not "black" and self.grid[5-i-3][j+3].state is not "black":
+                        if self.grid[i][j].state is self.turn:
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            return -1000
+
         return 5
             
 
     def minimax(self, depth, isMaxiPlayer):
-        return 1
-        dupBoard = self
-        print("Hi")
+        dupe = self
         if self.move_count is 42:
             return 0
         score = self.evalFunction()
-        
+        print("Depth: " + str(depth))
+        print("Score: " + str(score))
         if score >= 1000:
             return score
         elif score <= -1000:
             return score
 
-
+        print("Recursive")
         if isMaxiPlayer:
             bestVal = -1000 
             for i in range(6):
                 for j in range(7):
-                    if self.grid[i][j].state is not "black":
-                        self.move = j
-                        self.grid[i][j].state = self.turn
-                        self.move()
-                        bestVal = max(bestVal, minimax(self,depth+1, False))
-                        self.grid[i][j].state = "black"
+                    if dupe.grid[i][j].state is "black":
+                        dupe.grid[i][j].state = self.turn
+                        if(depth < 10):
+                            bestVal = max(besVal, dupe.minimax(depth+1, False))
+                        else:
+                            dupe.grid[i][j].state = "black"
             return bestVal
         
         else:
             bestVal = 1000
             for i in range(6):
                 for j in range(7):
-                    if self.grid[i][j].state is not "black":
-                        self.move = j
-                        self.grid[i][j].state = self.turn
-                        self.move()
-                        bestVal = min(bestVal, minimax(self,depth+1, False))
-                        self.grid[i][j].reset()
+                    if dupe.grid[i][j].state is "black":
+                        dupe.grid[i][j].state = self.turn
+                        if(depth < 10):
+                            bestVal = min(bestVal, dupe.minimax(depth+1, False))
             return bestVal
-        return 5
-
+        return 0
