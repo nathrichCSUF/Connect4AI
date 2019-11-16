@@ -50,7 +50,8 @@ class Board:
         self.turn = "red"
         self.move_count = 0
         self.oppGrid = [0,0,0,0,0,0,0]
-        self.aiGrid = [0,0,0,0,0,0,0]
+        self.optMoveRow = 0
+        self.optMoveCol = 0
 
     def define_slot_positions(self):
         for i in range(6):
@@ -205,89 +206,162 @@ class Board:
 
     def evalFunction(self):
         turn = self.turn
+        print("AI Color: " + str(self.turn))
         self.change_turn()
         opp = self.turn
         self.change_turn()
+        placeholder = 0
         print("First Loop")
         for i in range(3):
             for j in range(7):
-                if self.grid[i][j].state is not "black":
-                    if self.grid[i+1][j].state == self.grid[i+2][j].state and self.grid[i+2][j].state == self.grid[i+3][j].state and self.grid[i+1][j].state is not "black" and self.grid[i+2][j].state is not "black" and self.grid[i+3][j].state is not "black":
-                        print(str(self.grid[i][j].state))
-                        print(str(self.grid[i+1][j].state))
-                        print(str(self.grid[i+2][j].state))
-                        print(str(self.grid[i+3][j].state))
+                if self.grid[i][j].state is self.grid[i+1][j].state and self.grid[i+1][j].state is self.grid[i+2][j].state:
+                    if self.grid[i][j].state is not "black":
+                        #and self.grid[i+2][j].state is not "black" and self.grid[i+3][j].state is not "black"
+                        # print(str(self.grid[i][j].state))
+                        # print(str(self.grid[i+1][j].state))
+                        # print(str(self.grid[i+2][j].state))
+                        # print(str(self.grid[i+3][j].state))
 
+                        print("[i+1] Area\n")
+                        if self.grid[i][j].state is self.turn:
+                            if self.grid[i + 3][j].state is self.turn:
+                                self.optMoveRow = j
+                                self.optMoveCol = i + 3
+                                print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                                return 1000
+                        elif self.grid[i + 3][j].state is not self.turn:
+                                self.optMoveRow = j
+                                self.optMoveCol = i + 3
+                                print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                                return -1000
+                        elif self.grid[i][j].state is "black":
+                            pass
 
-                        if self.grid[i][j].state is self.turn:
-                            return 1000
-                        elif self.grid[i][j].state is opp:
-                            return -1000
-        print("Second")
-        for i in range(6):
-            for j in range(4):
-                if self.grid[i][j].state is not "black":
-                    if self.grid[i][j+1].state == self.grid[i][j+2].state and self.grid[i][j+2].state == self.grid[i][j+3].state and self.grid[i][j+1].state is not "black" and self.grid[i][j+2].state is not "black" and self.grid[i][j+3].state is not "black":
-                        if self.grid[i][j].state is self.turn:
-                            return 1000
-                        elif self.grid[i][j].state is opp:
-                            return -1000
-        print("Third")
-        for i in range(3):
-            for j in range(4):
-                if self.grid[i][j].state is not "black":
-                    if self.grid[i+1][j+1].state == self.grid[i+2][j+2].state and self.grid[i+2][j+2].state == self.grid[i+3][j+3].state and self.grid[i+1][j+1].state is not "black" and self.grid[i+2][j+2].state is not "black" and self.grid[i+3][j+3].state is not "black":                     
-                        if self.grid[i][j].state is self.turn:
-                            return 1000
-                        elif self.grid[i][j].state is opp:
-                            return -1000
+                    # elif self.grid[i-1][j].state == self.grid[i-2][j].state and self.grid[i-2][j].state == self.grid[i-3][j].state and self.grid[i-1][j].state is not "black":
+                    #     #and self.grid[i-2][j].state is not "black" and self.grid[i-3][j].state is not "black"
+                    #     # print(str(self.grid[i][j].state))
+                    #     # print(str(self.grid[i+1][j].state))
+                    #     # print(str(self.grid[i+2][j].state))
+                    #     # print(str(self.grid[i+3][j].state))
+                    #     print("[i-1] Area\n")
+                    #     if self.grid[i - 1][j].state is not self.turn:
+                    #         self.optMoveRow = i
+                    #         self.optMoveCol = j
+                    #         print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                    #         return 1000
+                    #     else:
+                    #         self.optMoveRow = i
+                    #         self.optMoveCol = j
+                    #         print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                    #         return -1000
 
-        
-        print("Forth")
-        for i in range(3):
-            for j in range(4):
-                if self.grid[5-i][j].state is not "black":
-                    if self.grid[5-i-1][j+1].state == self.grid[5-i-2][j+2].state and self.grid[5-i-2][j+2].state == self.grid[5-i-3][j+3].state is turn  and self.grid[5-i-1][j+1].state is not "black" and self.grid[5-i-2][j+2].state is not "black" and self.grid[5-i-3][j+3].state is not "black":
-                        if self.grid[i][j].state is self.turn:
-                            return 1000
-                        elif self.grid[i][j].state is opp:
-                            return -1000
+        # print("Second")
+        # for i in range(6):
+        #     for j in range(4):
+        #         if self.grid[i][j].state is not "black":
+        #             if self.grid[i][j+1].state == self.grid[i][j+2].state and self.grid[i][j+2].state == self.grid[i][j+3].state and self.grid[i][j+1].state is not "black" and self.grid[i][j+2].state is not "black" and self.grid[i][j+3].state is not "black":
+        #                 if self.grid[i][j].state is self.turn:
+        #                     self.optMove = i
+        #                     return 1000
+        #                 elif self.grid[i][j].state is opp:
+        #                     self.optMove = i
+        #                     return -1000
+        # print("Third")
+        # for i in range(3):
+        #     for j in range(4):
+        #         if self.grid[i][j].state is not "black":
+        #             if self.grid[i+1][j+1].state == self.grid[i+2][j+2].state and self.grid[i+2][j+2].state == self.grid[i+3][j+3].state and self.grid[i+1][j+1].state is not "black" and self.grid[i+2][j+2].state is not "black" and self.grid[i+3][j+3].state is not "black":
+        #                 if self.grid[i][j].state is self.turn:
+        #                     self.optMove = i
+        #                     return 1000
+        #                 elif self.grid[i][j].state is opp:
+        #                     self.optMove = i
+        #                     return -1000
+        #
+        #
+        # print("Forth")
+        # for i in range(3):
+        #     for j in range(4):
+        #         if self.grid[5-i][j].state is not "black":
+        #             if self.grid[5-i-1][j+1].state == self.grid[5-i-2][j+2].state and self.grid[5-i-2][j+2].state == self.grid[5-i-3][j+3].state is turn  and self.grid[5-i-1][j+1].state is not "black" and self.grid[5-i-2][j+2].state is not "black" and self.grid[5-i-3][j+3].state is not "black":
+        #                 if self.grid[i][j].state is self.turn:
+        #                     self.optMove = i
+        #                     return 1000
+        #                 elif self.grid[i][j].state is opp:
+        #                     self.optMove = i
+        #                     return -1000
 
-        return 5
+        return 0
             
 
     def minimax(self, depth, isMaxiPlayer):
         dupe = self
+        val = 0
         if self.move_count is 42:
             return 0
         score = self.evalFunction()
         print("Depth: " + str(depth))
         print("Score: " + str(score))
-        if score >= 1000:
-            return score
-        elif score <= -1000:
-            return score
+        if score == 1000:
+            print("My turn to win!")
+            return self.optMoveRow
+        elif score == -1000:
+            return self.optMoveRow
 
-        print("Recursive")
+        #print("\nRecursive\n")
         if isMaxiPlayer:
-            bestVal = -1000 
+            print("Entering Maxi Player Loop")
+            bestVal = -1000
+
+            placeholder = 0
+            minValueRow = [0, 0, 0, 0, 0, 0, 0]
+            minValueCol = [0, 0, 0, 0, 0, 0, 0]
             for i in range(6):
                 for j in range(7):
                     if dupe.grid[i][j].state is "black":
-                        dupe.grid[i][j].state = self.turn
-                        if(depth < 10):
-                            bestVal = max(besVal, dupe.minimax(depth+1, False))
-                        else:
-                            dupe.grid[i][j].state = "black"
-            return bestVal
+                        minValueRow[placeholder] = i
+                        minValueCol[placeholder] = j
+                        placeholder = placeholder + 1
+                        break
+            for i in range(7):
+                    if dupe.grid[minValueRow[i]][minValueCol[i]].state is "black":
+                        self.button_position = minValueRow[i]
+                        if self.check_valid_move():
+                            dupe.grid[minValueRow[i]][minValueCol[i]].state = self.turn
+                            if(depth < 2):
+                                print("Thinking for Spot: " + str(i) + " " + str(j))
+                                bestVal = max(bestVal, dupe.minimax(depth+1, True))
+                                print("I reset the slot?\n")
+                                val = i
+                            dupe.grid[minValueRow[i]][minValueCol[i]].state = "black"
+            return minValueRow[i]
+            print("Val: " + str(bestVal))
         
         else:
+            print("Entering Mini Player Lopp")
             bestVal = 1000
+            placeholder = 0
+            minValueRow = [0, 0, 0, 0, 0, 0, 0]
+            minValueCol = [0, 0, 0, 0, 0, 0, 0]
             for i in range(6):
                 for j in range(7):
                     if dupe.grid[i][j].state is "black":
-                        dupe.grid[i][j].state = self.turn
-                        if(depth < 10):
-                            bestVal = min(bestVal, dupe.minimax(depth+1, False))
-            return bestVal
-        return 0
+                        minValueRow[placeholder] = i
+                        minValueCol[placeholder] = j
+                        placeholder = placeholder + 1
+                        break
+            for i in range(7):
+                    if dupe.grid[minValueRow[i]][minValueCol[i]].state is "black":
+                        self.button_position = minValueRow[i]
+                        if self.check_valid_move():
+                            dupe.grid[i][j].state = self.turn
+                            if(depth < 2):
+                                print("Thinking for Spot: " + str(i) + " " + str(j))
+                                bestVal = min(bestVal, dupe.minimax(depth+1, False))
+                                print("I reset the value\n")
+                                val = i
+                            dupe.grid[minValueRow[i]][minValueCol[i]].state = "black"
+
+            return minValueRow[i]
+            print("Val: " + str(bestVal))
+        return 5

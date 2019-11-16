@@ -126,8 +126,9 @@ class Game:
                     #ai
                     moved = False
                     while not moved:
-                        move = self.game_board.minimax(0, False)
-                        print("Minmax Number:" + str(move)) 
+                        move = self.game_board.minimax(0, True)
+                        print("Minmax Number:" + str(move))
+                        self.game_board.button_position = move
                         #while self.game_board.button_position < move:
                             #self.game_board.move_select_button("right")
                             #pygame.event.pump()
