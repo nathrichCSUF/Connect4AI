@@ -222,7 +222,7 @@ class Board:
                         # print(str(self.grid[i+2][j].state))
                         # print(str(self.grid[i+3][j].state))
 
-                        print("[i+1] Vertical Win Area\n")
+                        print("Vertical Win Area\n")
                         if self.grid[i][j].state is self.turn:
                             print("Going for AI Win Move")
                             if self.grid[i + 3][j].state is self.turn:
@@ -244,7 +244,7 @@ class Board:
                 if self.grid[i][j].state == self.grid[i][j+1].state and self.grid[i][j+1].state == self.grid[i][j+2].state:
                     if self.grid[i][j].state is not "black":
 
-                        print("[i+1] Horizontal Three in a Row Win Area\n")
+                        print("Horizontal Four in a Row Win Area\n")
                         if self.grid[i][j].state is self.turn:
                             print("Going for AI Win Move")
                             if self.grid[i][j + 3].state is self.turn:
@@ -263,7 +263,7 @@ class Board:
 
                 elif self.grid[i][j].state == self.grid[i][j + 2].state and self.grid[i][j + 2].state == self.grid[i][j + 3].state:
                     if self.grid[i][j + 1].state is "black":
-                        print("Horizontal 2nd Piece Win Area\n")
+                        print("Horizontal 2nd Piece Missing Win Area\n")
                         if self.grid[i][j].state is self.turn:
                             print("Going for AI Win Move")
                             self.optMoveRow = j + 1
@@ -281,7 +281,7 @@ class Board:
 
                 elif self.grid[i][j].state == self.grid[i][j + 1].state and self.grid[i][j + 1].state == self.grid[i][j + 3].state:
                     if self.grid[i][j + 2].state is "black":
-                        print("Horizontal 3rd Piece Win Area\n")
+                        print("Horizontal 3rd Piece Missing Win Area\n")
                         if self.grid[i][j].state is self.turn:
                             print("Going for AI Win Move")
                             self.optMoveRow = j + 2
@@ -296,19 +296,71 @@ class Board:
                             return -1000
                         elif self.grid[i][j].state is "black":
                             pass
-        # print("Third")
-        # for i in range(3):
-        #     for j in range(4):
-        #         if self.grid[i][j].state is not "black":
-        #             if self.grid[i+1][j+1].state == self.grid[i+2][j+2].state and self.grid[i+2][j+2].state == self.grid[i+3][j+3].state and self.grid[i+1][j+1].state is not "black" and self.grid[i+2][j+2].state is not "black" and self.grid[i+3][j+3].state is not "black":
-        #                 if self.grid[i][j].state is self.turn:
-        #                     self.optMove = i
-        #                     return 1000
-        #                 elif self.grid[i][j].state is opp:
-        #                     self.optMove = i
-        #                     return -1000
-        #
-        #
+                if self.grid[i][j + 1].state == self.grid[i][j+2].state and self.grid[i][j+2].state == self.grid[i][j+3].state and self.grid[i][j+1].state is not "black":
+                    if self.grid[i][j].state is "black":
+
+                        print("Horizontal Four a Row Win 1st Piece Missing Area\n")
+                        if self.grid[i][j + 1].state is self.turn:
+                            print("Going for AI Win Move")
+                            self.optMoveRow = j
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j + 1].state is not self.turn:
+                            print("Blocking Player Win Move")
+                            self.optMoveRow = j
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
+
+        print("Checking Diagonal of the right")
+        for i in range(3):
+            for j in range(4):
+                if self.grid[i][j].state == self.grid[i+1][j+1].state and self.grid[i+1][j+1].state == self.grid[i+2][j+2].state:
+                    if self.grid[i + 3][j + 3].state is "black":
+                        print("Blocking Diagonal Four in a Row")
+                        if self.grid[i][j].state is self.turn:
+                            self.optMoveRow = j + 3
+                            self.optMoveCol = i + 3
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            self.optMoveRow = j + 3
+                            self.optMoveCol = i + 3
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
+                if self.grid[i][j].state == self.grid[i+1][j+1].state and self.grid[i+1][j+1].state == self.grid[i+3][j+3].state:
+                    if self.grid[i+2][j+2].state is "black":
+                        print("Blocking Diagonal Four in a Row 3rd Piece Missing")
+                        if self.grid[i][j].state is self.turn:
+                            self.optMoveRow = j + 2
+                            self.optMoveCol = i + 2
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            self.optMoveRow = j + 2
+                            self.optMoveCol = i + 2
+                            return -1000
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                        elif self.grid[i][j].state is "black":
+                            pass
+                if self.grid[i][j].state == self.grid[i+2][j+2].state and self.grid[i+2][j+2].state == self.grid[i+3][j+3].state:
+                    if self.grid[i+1][j+1].state is "black":
+                        print("Blocking Diagonal Four in a Row 2nd Piece Missing")
+                        if self.grid[i][j].state is self.turn:
+                            self.optMoveRow = j + 1
+                            self.optMoveCol = i + 1
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            self.optMoveRow = j + 1
+                            self.optMoveCol = i + 1
+                            return -1000
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                        elif self.grid[i][j].state is "black":
+                            pass
+
+
         # print("Forth")
         # for i in range(3):
         #     for j in range(4):
@@ -325,7 +377,6 @@ class Board:
             
 
     def minimax(self, depth, isMaxiPlayer):
-        dupe = self
         val = 0
         if self.move_count is 42:
             return 0
@@ -336,62 +387,66 @@ class Board:
             print("My turn to win!")
             return self.optMoveRow
         elif score == -1000:
+            print("Player Winning Move is being Blocked by AI")
             return self.optMoveRow
 
+        placeholder = 0
+        minValueRow = [0, 0, 0, 0, 0, 0, 0]
+        minValueCol = [0, 0, 0, 0, 0, 0, 0]
+
+        for i in range(6):
+            for j in range(7):
+                if self.grid[i][j].state is "black":
+                    minValueRow[placeholder] = i
+                    minValueCol[placeholder] = j
+                    placeholder = placeholder + 1
+                    break
         #print("\nRecursive\n")
         if isMaxiPlayer:
             print("Entering Maxi Player Loop")
             bestVal = -1000
 
-            placeholder = 0
-            minValueRow = [0, 0, 0, 0, 0, 0, 0]
-            minValueCol = [0, 0, 0, 0, 0, 0, 0]
-            for i in range(6):
-                for j in range(7):
-                    if dupe.grid[i][j].state is "black":
-                        minValueRow[placeholder] = i
-                        minValueCol[placeholder] = j
-                        placeholder = placeholder + 1
-                        break
+            print("7th Col State: " + str(self.grid[0][6].state))
+
             for i in range(7):
-                    if dupe.grid[minValueRow[i]][minValueCol[i]].state is "black":
+                print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
+            placeholder = 0
+            for i in range(7):
+                    if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
                         self.button_position = minValueRow[i]
                         if self.check_valid_move():
-                            dupe.grid[minValueRow[i]][minValueCol[i]].state = self.turn
+                            self.grid[minValueRow[i]][minValueCol[i]].state = self.turn
                             if(depth < 2):
                                 print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = max(bestVal, dupe.minimax(depth+1, True))
+                                bestVal = max(bestVal, self.minimax(depth+1, True))
                                 print("I reset the slot?\n")
                                 val = i
-                            dupe.grid[minValueRow[i]][minValueCol[i]].state = "black"
+                            self.grid[minValueRow[i]][minValueCol[i]].state = "black"
             return minValueRow[i]
             print("Val: " + str(bestVal))
         
         else:
             print("Entering Mini Player Lopp")
             bestVal = 1000
+
             placeholder = 0
-            minValueRow = [0, 0, 0, 0, 0, 0, 0]
-            minValueCol = [0, 0, 0, 0, 0, 0, 0]
-            for i in range(6):
-                for j in range(7):
-                    if dupe.grid[i][j].state is "black":
-                        minValueRow[placeholder] = i
-                        minValueCol[placeholder] = j
-                        placeholder = placeholder + 1
-                        break
             for i in range(7):
-                    if dupe.grid[minValueRow[i]][minValueCol[i]].state is "black":
+                print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
+
+            for i in range(7):
+                    if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
                         self.button_position = minValueRow[i]
                         if self.check_valid_move():
-                            dupe.grid[i][j].state = self.turn
+                            self.grid[i][j].state = self.turn
                             if(depth < 2):
                                 print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = min(bestVal, dupe.minimax(depth+1, False))
+                                bestVal = min(bestVal, self.minimax(depth+1, False))
                                 print("I reset the value\n")
                                 val = i
-                            dupe.grid[minValueRow[i]][minValueCol[i]].state = "black"
-
+                            self.grid[minValueRow[i]][minValueCol[i]].state = "black"
+                        else:
+                            break
             return minValueRow[i]
             print("Val: " + str(bestVal))
+
         return 5
