@@ -222,50 +222,80 @@ class Board:
                         # print(str(self.grid[i+2][j].state))
                         # print(str(self.grid[i+3][j].state))
 
-                        print("[i+1] Area\n")
+                        print("[i+1] Vertical Win Area\n")
                         if self.grid[i][j].state is self.turn:
+                            print("Going for AI Win Move")
                             if self.grid[i + 3][j].state is self.turn:
                                 self.optMoveRow = j
                                 self.optMoveCol = i + 3
                                 print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
                                 return 1000
                         elif self.grid[i + 3][j].state is not self.turn:
-                                self.optMoveRow = j
-                                self.optMoveCol = i + 3
+                            print("Blocking Player Win Move")
+                            self.optMoveRow = j
+                            self.optMoveCol = i + 3
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
+                        elif self.grid[i][j].state is "black":
+                            pass
+        print("Horizontal Win Loop")
+        for i in range(6):
+            for j in range(4):
+                if self.grid[i][j].state == self.grid[i][j+1].state and self.grid[i][j+1].state == self.grid[i][j+2].state:
+                    if self.grid[i][j].state is not "black":
+
+                        print("[i+1] Horizontal Three in a Row Win Area\n")
+                        if self.grid[i][j].state is self.turn:
+                            print("Going for AI Win Move")
+                            if self.grid[i][j + 3].state is self.turn:
+                                self.optMoveRow = j + 3
+                                self.optMoveCol = i
                                 print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
-                                return -1000
+                                return 1000
+                        elif self.grid[i][j + 3].state is not self.turn:
+                            print("Blocking Player Win Move")
+                            self.optMoveRow = j + 3
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
                         elif self.grid[i][j].state is "black":
                             pass
 
-                    # elif self.grid[i-1][j].state == self.grid[i-2][j].state and self.grid[i-2][j].state == self.grid[i-3][j].state and self.grid[i-1][j].state is not "black":
-                    #     #and self.grid[i-2][j].state is not "black" and self.grid[i-3][j].state is not "black"
-                    #     # print(str(self.grid[i][j].state))
-                    #     # print(str(self.grid[i+1][j].state))
-                    #     # print(str(self.grid[i+2][j].state))
-                    #     # print(str(self.grid[i+3][j].state))
-                    #     print("[i-1] Area\n")
-                    #     if self.grid[i - 1][j].state is not self.turn:
-                    #         self.optMoveRow = i
-                    #         self.optMoveCol = j
-                    #         print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
-                    #         return 1000
-                    #     else:
-                    #         self.optMoveRow = i
-                    #         self.optMoveCol = j
-                    #         print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
-                    #         return -1000
+                elif self.grid[i][j].state == self.grid[i][j + 2].state and self.grid[i][j + 2].state == self.grid[i][j + 3].state:
+                    if self.grid[i][j + 1].state is "black":
+                        print("Horizontal 2nd Piece Win Area\n")
+                        if self.grid[i][j].state is self.turn:
+                            print("Going for AI Win Move")
+                            self.optMoveRow = j + 1
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j].state is not self.turn:
+                            print("Blocking Player Win Move")
+                            self.optMoveRow = j + 1
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
+                        elif self.grid[i][j].state is "black":
+                            pass
 
-        # print("Second")
-        # for i in range(6):
-        #     for j in range(4):
-        #         if self.grid[i][j].state is not "black":
-        #             if self.grid[i][j+1].state == self.grid[i][j+2].state and self.grid[i][j+2].state == self.grid[i][j+3].state and self.grid[i][j+1].state is not "black" and self.grid[i][j+2].state is not "black" and self.grid[i][j+3].state is not "black":
-        #                 if self.grid[i][j].state is self.turn:
-        #                     self.optMove = i
-        #                     return 1000
-        #                 elif self.grid[i][j].state is opp:
-        #                     self.optMove = i
-        #                     return -1000
+                elif self.grid[i][j].state == self.grid[i][j + 1].state and self.grid[i][j + 1].state == self.grid[i][j + 3].state:
+                    if self.grid[i][j + 2].state is "black":
+                        print("Horizontal 3rd Piece Win Area\n")
+                        if self.grid[i][j].state is self.turn:
+                            print("Going for AI Win Move")
+                            self.optMoveRow = j + 2
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return 1000
+                        elif self.grid[i][j].state is not self.turn:
+                            print("Blocking Player Win Move")
+                            self.optMoveRow = j + 2
+                            self.optMoveCol = i
+                            print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
+                            return -1000
+                        elif self.grid[i][j].state is "black":
+                            pass
         # print("Third")
         # for i in range(3):
         #     for j in range(4):
