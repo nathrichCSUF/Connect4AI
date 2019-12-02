@@ -390,6 +390,7 @@ class Board:
     def obtainNextAvailRow(self, col):
         for i in range(6):
             if self.grid[i][col].state == "black":
+                # print("i: " + str(i))
                 return i
 
     def score_position(self, board):
@@ -403,6 +404,7 @@ class Board:
             if (self.grid[3][i].state == self.turn):
                 centerCount += 1
         score += centerCount * 3
+        print("Score of Central Column " + self.turn + ":" + str(score))
 
         # score horizontal
 
@@ -411,6 +413,7 @@ class Board:
             for c in range(4):  # COLUMN COUNT - 3
                 window = row_array[c:c + 4]  # Window length
                 score += self.evaluate_window(window, board.turn)
+        print("Score of Horizontal " + self.turn + ":" + str(score))
 
         # score vertical
         row_index = 0;
@@ -422,33 +425,52 @@ class Board:
             for r in range(3):  # Column count  - 3
                 window = col_array[r:r + 4]
                 score += self.evaluate_window(window, board.turn)
+        print("Score of Vertical " + self.turn + ":" + str(score))
 
         # Score posiive sloped diagonal
         for r in range(3):  # Rowcount - 3
             for c in range(4):  # column count - 3
                 window = [board.grid[r + i][c + i] for i in range(4)]
                 score += self.evaluate_window(window, board.turn)
+        print("Score of Positive Diagonals " + self.turn + ":" + str(score))
 
         for r in range(3):  # row count - 3
             for c in range(4):  # row counr - 3
                 window = [board.grid[r + 3 - i][c + i] for i in range(4)]
                 score += self.evaluate_window(window, board.turn)
+        print("Score of Negative Diagonals " + self.turn + ":" + str(score))
 
         return score
 
     def evaluate_window(self, window, piece):
         score = 0
-        opp_piece = 1
-        if piece == 1:
-            opp_piece = 2
-        if window.count(piece) == 4:
+        piece = self.turn
+        self.change_turn()
+        opp_piece = self.turn
+        self.change_turn()
+        accum = 0
+        selfPiece = 0
+        oppPiece = 0
+
+        for i in range(len(window)):
+            if (window[i].state is "black"):
+                accum += 1
+            if (window[i].state == piece):
+                selfPiece += 1
+            if(window[i].state == opp_piece):
+                oppPiece += 1
+
+
+        if selfPiece == 4:
             score += 100
-        elif window.count(piece) == 3 and window.count((self.turn == "black")) == 1:
+        elif selfPiece == 3 and accum == 1:
             score += 5
-        elif window.count(piece) == 2 and window.count((self.turn == "black")) == 2:
+        elif selfPiece == 2 and accum == 2:
             score += 2
-        if window.count(opp_piece) == 3 and window.count((self.turn == "black")) == 1:
+        if oppPiece == 3 and accum == 1:
             score -= 4
+        # print("Score of " + self.turn + ":" + str(score))
+
         return score
 
     # def minimax(board, depth, bestVal, minVal, isMaxiPlayer):

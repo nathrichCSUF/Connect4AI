@@ -143,13 +143,13 @@ class Game:
                             pygame.display.update()
                             moved = True
 
-                    if self.game_board.check_win(): 
+                    if self.game_board.check_win():
                         pygame.display.update()
                         pygame.event.pump()
                         time.sleep(2)
                         self.settings.toggle_game_active()
                         pygame.mouse.set_visible(True)
-                        #blit win thing too?
+                        # blit win thing too?
                     if self.game_board.move_count is 42:
                         pygame.event.pump()                                    #blit tie game
                         time.sleep(2)
