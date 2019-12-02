@@ -216,11 +216,6 @@ class Board:
             for j in range(7):
                 if self.grid[i][j].state is self.grid[i+1][j].state and self.grid[i+1][j].state is self.grid[i+2][j].state:
                     if self.grid[i][j].state is not "black":
-                        #and self.grid[i+2][j].state is not "black" and self.grid[i+3][j].state is not "black"
-                        # print(str(self.grid[i][j].state))
-                        # print(str(self.grid[i+1][j].state))
-                        # print(str(self.grid[i+2][j].state))
-                        # print(str(self.grid[i+3][j].state))
 
                         print("Vertical Win Area\n")
                         if self.grid[i][j].state is self.turn:
@@ -377,79 +372,194 @@ class Board:
         # for i in range ()
 
         return 0
-            
 
-    def minimax(self, depth, isMaxiPlayer):
-        val = 0
-        if self.move_count is 42:
-            return 0
-        score = self.evalFunction()
-        print("Depth: " + str(depth))
-        print("Score: " + str(score))
-        if score == 1000:
-            print("My turn to win!")
-            return self.optMoveRow
-        elif score == -1000:
-            print("Player Winning Move is being Blocked by AI")
-            return self.optMoveRow
+    def ifValidCol(self, col):
+        return self.grid[6 - 1][col].state is "black"
 
-        placeholder = 0
-        minValueRow = [0, 0, 0, 0, 0, 0, 0]
-        minValueCol = [0, 0, 0, 0, 0, 0, 0]
+    def gameFinished(self):
+        if (self.move_count == 42 or len(self.getValidLocations()) == 0):
+            return True
+        return False
+    def getValidLocations(self):
+        validCol = []
+        for i in range(7):
+            if self.ifValidCol(i):
+                validCol.append(i)
+        return validCol
 
+    def obtainNextAvailRow(self, col):
         for i in range(6):
-            for j in range(7):
-                if self.grid[i][j].state is "black":
-                    minValueRow[placeholder] = i
-                    minValueCol[placeholder] = j
-                    placeholder = placeholder + 1
-                    break
-        #print("\nRecursive\n")
-        if isMaxiPlayer:
-            print("Entering Maxi Player Loop")
-            bestVal = -1000
+            if self.grid[i][col].state == "black":
+                return i
 
-            print("7th Col State: " + str(self.grid[0][6].state))
+    def score_position(self, board):
+        score = 0
 
-            for i in range(7):
-                print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
-            placeholder = 0
-            for i in range(7):
-                    if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
-                        self.button_position = minValueRow[i]
-                        if self.check_valid_move():
-                            self.grid[minValueRow[i]][minValueCol[i]].state = self.turn
-                            if(depth < 2):
-                                print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = max(bestVal, self.minimax(depth-1, False))
-                                print("I reset the slot?\n")
-                                val = i
-                            self.grid[minValueRow[i]][minValueCol[i]].state = "black"
-            return minValueRow[i]
-            print("Val: " + str(bestVal))
-        
-        else:
-            print("Entering Mini Player Lopp")
-            bestVal = 1000
+        # score center column
+        center_array = [sl.Slot(i) for i in list(board.grid[:, (7 // 2)])]  # Get center array by dividing number of columns
+        # center_count = center_array.count(board.turn)
+        center_count = 0
+        for i in range(len(center_array)):
+            if center_array[i].state == board.turn:
+                center_count += 1
+        score += center_count * 3
 
-            placeholder = 0
-            for i in range(7):
-                print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
+        # score horizontal
 
-            for i in range(7):
-                    if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
-                        self.button_position = minValueRow[i]
-                        if self.check_valid_move():
-                            self.grid[i][j].state = self.turn
-                            if(depth < 2):
-                                print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = min(bestVal, self.minimax(depth-1, True))
-                                print("I reset the value\n")
-                                val = i
-                            self.grid[minValueRow[i]][minValueCol[i]].state = "black"
-                        else:
-                            break
-            return minValueRow[i]
-            print("Val: " + str(bestVal))
+        for r in range(6):
+            row_array = [sl.Slot(i) for i in list(board.grid[r, :])]
+            for c in range(4):  # COLUMN COUNT - 3
+                window = row_array[c:c + 4]  # Window length
+                score += self.evaluate_window(window, board.turn)
 
-        return 5
+        # score vertical
+        for c in range(7):  # Row_count - 3
+            col_array = [sl.Slot(i) for i in list(board[:, c])]
+            for r in range(3):  # Column count  - 3
+                window = col_array[r:r + 4]
+                score += self.evaluate_window(window, board.turn)
+
+        # Score posiive sloped diagonal
+        for r in range(3):  # Rowcount - 3
+            for c in range(4):  # column count - 3
+                window = [board.grid[r + i][c + i] for i in range(4)]
+                score += self.evaluate_window(window, board.turn)
+
+        for r in range(3):  # row count - 3
+            for c in range(4):  # row counr - 3
+                window = [board.grid[r + 3 - i][c + i] for i in range(4)]
+                score += self.evaluate_window(window, board.turn)
+
+        return score
+
+    def evaluate_window(self, window, piece):
+        score = 0
+        opp_piece = 1
+        if piece == 1:
+            opp_piece = 2
+        if window.count(piece) == 4:
+            score += 100
+        elif window.count(piece) == 3 and window.count((self.turn == "black")) == 1:
+            score += 5
+        elif window.count(piece) == 2 and window.count((self.turn == "black")) == 2:
+            score += 2
+        if window.count(opp_piece) == 3 and window.count((self.turn == "black")) == 1:
+            score -= 4
+        return score
+
+    # def minimax(board, depth, bestVal, minVal, isMaxiPlayer):
+    #     val = 0
+    #     col = 0
+    #     r = 0
+    #     self.copy
+    #     # score = self.evalFunction()
+    #     # print("Depth: " + str(depth))
+    #     # print("Score: " + str(score))
+    #     # if score == 1000:
+    #     #     print("My turn to win!")
+    #     #     return self.optMoveRow
+    #     # elif score == -1000:
+    #     #     print("Player Winning Move is being Blocked by AI")
+    #     #     return self.optMoveRow
+    #     #
+    #     # placeholder = 0
+    #     validLocations = self.getValidLocations()
+    #     is_gameTerminal = self.gameFinished()
+    #     if depth == 0 or is_gameTerminal:
+    #         if is_gameTerminal:
+    #             return 0
+    #         else:
+    #             return 0
+    #
+    #     # for i in range(6):
+    #     #     for j in range(7):
+    #     #         if self.grid[i][j].state is "black":
+    #     #             minValueRow[placeholder] = i
+    #     #             minValueCol[placeholder] = j
+    #     #             placeholder = placeholder + 1
+    #     #             break
+    #     #print("\nRecursive\n")
+    #     if isMaxiPlayer:
+    #         print("Entering Maxi Player Loop")
+    #         highestVal = -1000
+    #         print("7th Col State: " + str(self.grid[0][6].state))
+    #         for i in validLocations:
+    #             r = self.obtainNextAvailRow(i)
+    #             selfCopy = self.copy()
+    #             selfCopy.grid[r][i].state = self.turn
+    #             value = selfCopy.minimax(selfCopy, (depth - 1), bestVal, minVal, False)[1]
+    #             if value > highestVal:
+    #                 highestVal = value
+    #                 col = i
+    #             bestVal = max(bestVal, highestVal)
+    #             if bestVal >= minVal:
+    #                 break
+    #             return col,highestVal
+    #
+    #         # for i in range(7):
+    #         #     print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
+    #         # placeholder = 0
+    #         # for i in range(7):
+    #         #         if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
+    #         #             self.button_position = minValueRow[i]
+    #         #             if self.check_valid_move():
+    #         #                 self.grid[minValueRow[i]][minValueCol[i]].state = self.turn
+    #         #                 if(depth < 2):
+    #         #                     print("Thinking for Spot: " + str(i) + " " + str(j))
+    #         #                     bestVal = max(bestVal, self.minimax(depth-1, False))
+    #         #                     print("I reset the slot?\n")
+    #         #                     val = i
+    #         #                 self.grid[minValueRow[i]][minValueCol[i]].state = "black"
+    #         # return minValueRow[i]
+    #         # print("Val: " + str(bestVal))
+    #
+    #     else:
+    #         print("Entering Mini Player Lopp")
+    #         highestVal = 1000
+    #         col = 0
+    #         # placeholder = 0
+    #         # for i in range(7):
+    #         #     print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
+    #
+    #         for i in range(validLocations):
+    #             r = self.obtainNextAvailRow(i)
+    #             selfCopy = self.copy()
+    #             selfCopy.grid[r][i].state = self.turn
+    #             value = selfCopy.minimax(selfCopy, (depth - 1), bestVal, minVal, True)[1]
+    #             if value < highestVal:
+    #                 highestVal = value
+    #                 col = i
+    #             minVal = min(highestVal, minVal)
+    #             if bestVal >= minVal:
+    #                 break
+    #             return col, highestVal
+    #             # self.grid[i][j].state = self.turn
+    #             # if self.grid[minValueRow[i]][minValueCol[i]].state is "black":
+    #             #     self.button_position = minValueRow[i]
+    #             #     if self.check_valid_move():
+    #         #                 if(depth < 2):
+    #         #                     print("Thinking for Spot: " + str(i) + " " + str(j))
+    #         #                     bestVal = min(bestVal, self.minimax(depth-1, True))
+    #         #                     print("I reset the value\n")
+    #         #                     val = i
+    #         #                 self.grid[minValueRow[i]][minValueCol[i]].state = "black"
+    #         #             else:
+    #         #                 break
+    #         # return minValueRow[i]
+    #         # print("Val: " + str(bestVal))
+
+    def optimalMove(self, turn):
+        availableLocations = self.getValidLocations()
+        bestVal = -1000000
+        bestCol = 0
+        for i in range(availableLocations):
+            r = self.obtainNextAvailRow(i)
+            selfCopy = self.copy()
+            selfCopy.grid[r][i].state = self.turn
+            val = self.score_position(selfCopy, self.turn)
+            if val > bestVal:
+                val = bestVal
+                bestCol = i
+        return bestCol
+
+

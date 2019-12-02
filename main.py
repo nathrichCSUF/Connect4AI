@@ -18,12 +18,14 @@ import argparse
 from board import Board
 from settings import Settings
 from menu import Menu
+from ai import AI
 
 class Game:
     #Background Color
     BLACK = (0, 0, 0)
     BLUE = (0, 126, 231) # 007EE7 hex number
     def __init__(self):
+        self.ai = AI()
         pygame.init()  # initialize pygame
         self.red_selector = pygame.image.load("button-red.png")
         self.screen = pygame.display.set_mode((696, 700))  # screen size
@@ -125,39 +127,20 @@ class Game:
                     print("ai")
                     #ai
                     moved = False
+                    score = 0
                     while not moved:
-                        move = self.game_board.minimax(5, True)
+                        move, score = self.ai.minimax(self.game_board, 5, -1000000, 1000000, True)
+                        # move = self.game_board.minimax(5, True)
                         print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
                         while self.game_board.check_valid_move() is False:
                             move += 1
                             self.game_board.button_position = move
-                        #while self.game_board.button_position < move:
-                            #self.game_board.move_select_button("right")
-                            #pygame.event.pump()
-                            #pygame.display.update()
-                            #print("right")
-                            #x = 10000000
-                            #while(x):
-                                #x = x-1
-                        #while self.game_board.button_position > move:
-                          #  self.game_board.move_select_button("left")
-                           # pygame.event.pump()
-                            #pygame.display.update()
-                            #print("left")
-                            #x = 10000000
-                            #while(x):
-                                #x = x-1
+
                         if self.game_board.check_valid_move():
-                            #x = 10000000
-                            #while(x):
-                                #x = x-1
                             self.game_board.move()
                             pygame.event.pump()
                             pygame.display.update()
-                            #x = 10000000
-                            #while(x):
-                                #x = x-1
                             moved = True
 
                     if self.game_board.check_win(): 
