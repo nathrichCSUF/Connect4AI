@@ -242,14 +242,12 @@ class Board:
         # print(centerAr)
         # print("Amount of pieces in Central Column: " + str(centerCount) + ": Score: " + str(score))
 
-        # score horizontal
-
         for r in range(6):
             row_array = []
             for c in range(7):
                 row_array.append(board.grid[r][c].state)
-            for c in range(4):  # COLUMN COUNT - 3
-                window = row_array[c:c + 4]  # Window length
+            for c in range(4):  #
+                window = row_array[c:c + 4]
                 score += self.evaluate_window(window, board.turn)
         # print("Score of Horizontal " + self.turn + ":" + str(score))
 
@@ -267,17 +265,15 @@ class Board:
                 score += self.evaluate_window(window, board.turn)
         # print("Score:" + str(score))
         # print("Score of Vertical " + self.turn + ":" + str(score))
-        #
-        # Score posiive sloped diagonal
-        for r in range(3):  # Rowcount - 3
-            for c in range(4):  # column count - 3
 
+        for r in range(3):  # Rowcount - 3
+            for c in range(4):
                 window = [board.grid[r + i][c + i].state for i in range(4)]
                 score += self.evaluate_window(window, board.turn)
         # print("Score of Positive Diagonals " + self.turn + ":" + str(score))
         #
-        for r in range(3):  # row count - 3
-            for c in range(4):  # row counr - 3
+        for r in range(3):
+            for c in range(4):
                 window = [board.grid[r + 3 - i][c + i].state for i in range(4)]
                 score += self.evaluate_window(window, board.turn)
         # print("Score of Negative Diagonals " + self.turn + ":" + str(score))
