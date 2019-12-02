@@ -396,25 +396,29 @@ class Board:
         score = 0
 
         # score center column
-        center_array = [sl.Slot(i) for i in list(board.grid[:, (7 // 2)])]  # Get center array by dividing number of columns
+        # center_array = [sl.Slot(i) for i in list(board.grid[:, (7 // 2)])]  # Get center array by dividing number of columns
         # center_count = center_array.count(board.turn)
-        center_count = 0
-        for i in range(len(center_array)):
-            if center_array[i].state == board.turn:
-                center_count += 1
-        score += center_count * 3
+        centerCount = 0
+        for i in range(6):
+            if (self.grid[3][i].state == self.turn):
+                centerCount += 1
+        score += centerCount * 3
 
         # score horizontal
 
         for r in range(6):
-            row_array = [sl.Slot(i) for i in list(board.grid[r, :])]
+            row_array = [sl.Slot(i) for i in list(board.grid[r])]
             for c in range(4):  # COLUMN COUNT - 3
                 window = row_array[c:c + 4]  # Window length
                 score += self.evaluate_window(window, board.turn)
 
         # score vertical
+        row_index = 0;
         for c in range(7):  # Row_count - 3
-            col_array = [sl.Slot(i) for i in list(board[:, c])]
+            col_array = []
+            for r in range(6):
+                col_array.append(board.grid[r][c])
+            row_index += 1
             for r in range(3):  # Column count  - 3
                 window = col_array[r:r + 4]
                 score += self.evaluate_window(window, board.turn)
