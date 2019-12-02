@@ -126,7 +126,7 @@ class Game:
                     #ai
                     moved = False
                     while not moved:
-                        move = self.game_board.minimax(0, True)
+                        move = self.game_board.minimax(5, True)
                         print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
                         while self.game_board.check_valid_move() is False:

@@ -225,12 +225,12 @@ class Board:
                         print("Vertical Win Area\n")
                         if self.grid[i][j].state is self.turn:
                             print("Going for AI Win Move")
-                            if self.grid[i + 3][j].state is self.turn:
+                            if self.grid[i][j].state is self.turn:
                                 self.optMoveRow = j
                                 self.optMoveCol = i + 3
                                 print("OptMove: [" + str(self.optMoveRow) + "," + str(self.optMoveCol) + "]")
                                 return 1000
-                        elif self.grid[i + 3][j].state is not self.turn:
+                        elif self.grid[i][j].state is not self.turn:
                             print("Blocking Player Win Move")
                             self.optMoveRow = j
                             self.optMoveCol = i + 3
@@ -360,18 +360,21 @@ class Board:
                         elif self.grid[i][j].state is "black":
                             pass
 
-
-        # print("Forth")
-        # for i in range(3):
-        #     for j in range(4):
-        #         if self.grid[5-i][j].state is not "black":
-        #             if self.grid[5-i-1][j+1].state == self.grid[5-i-2][j+2].state and self.grid[5-i-2][j+2].state == self.grid[5-i-3][j+3].state is turn  and self.grid[5-i-1][j+1].state is not "black" and self.grid[5-i-2][j+2].state is not "black" and self.grid[5-i-3][j+3].state is not "black":
-        #                 if self.grid[i][j].state is self.turn:
-        #                     self.optMove = i
-        #                     return 1000
-        #                 elif self.grid[i][j].state is opp:
-        #                     self.optMove = i
-        #                     return -1000
+        print("Diagonal on the left")
+        for i in range(3):
+            for j in range(4):
+                if self.grid[i-1][i-1].state == self.grid[i-2][j-2].state and self.grid[i-2][j-2].state == self.grid[i-3][j-3].state is turn  and self.grid[i-1][j-1].state is not "black":
+                     if self.grid[i][j].state is "black":
+                        if self.grid[i][j].state is self.turn:
+                            self.optMoveRow = j
+                            self.optMoveCol = i
+                            return 1000
+                        elif self.grid[i][j].state is opp:
+                            self.optMoveRow = j
+                            self.optMoveCol = i
+                            return -1000
+        # print("Two in a Rows")
+        # for i in range ()
 
         return 0
             
@@ -418,7 +421,7 @@ class Board:
                             self.grid[minValueRow[i]][minValueCol[i]].state = self.turn
                             if(depth < 2):
                                 print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = max(bestVal, self.minimax(depth+1, True))
+                                bestVal = max(bestVal, self.minimax(depth-1, False))
                                 print("I reset the slot?\n")
                                 val = i
                             self.grid[minValueRow[i]][minValueCol[i]].state = "black"
@@ -440,7 +443,7 @@ class Board:
                             self.grid[i][j].state = self.turn
                             if(depth < 2):
                                 print("Thinking for Spot: " + str(i) + " " + str(j))
-                                bestVal = min(bestVal, self.minimax(depth+1, False))
+                                bestVal = min(bestVal, self.minimax(depth-1, True))
                                 print("I reset the value\n")
                                 val = i
                             self.grid[minValueRow[i]][minValueCol[i]].state = "black"
