@@ -35,7 +35,7 @@ class Game:
         #self.turn = "red"
         self.player = 1
     def play(self):
-
+        self.game_board.reset_game()
 
        
         gameover = False                # play until game is done
@@ -129,10 +129,10 @@ class Game:
                     moved = False
                     score = 0
                     while not moved:
-                        move, score = self.ai.minimax(self.game_board, 5, -1000000, 1000000, True)
-                        # move = self.game_board.minimax(5, True)
-                        print("Minmax Number:" + str(move))
+                        move, score = self.ai.minimax(self.game_board, 1, -1000000, 1000000, True)
+                        # print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
+                        # move = self.game_board.minimax(5, True)
                         while self.game_board.check_valid_move() is False:
                             move += 1
                             self.game_board.button_position = move
@@ -160,11 +160,10 @@ class Game:
                     #x = 10000000
                     #while(x):
                         #x = x-1
-                    
+                    print("Column Move: " + str(move) + " Turn " + str(self.game_board.turn) + " Score: " + str(score))
+
                     self.game_board.change_turn()
                     self.player = 1
-
-
 
                             
             else:

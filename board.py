@@ -377,7 +377,7 @@ class Board:
         return self.grid[6 - 1][col].state is "black"
 
     def gameFinished(self):
-        if (self.move_count == 42 or len(self.getValidLocations()) == 0):
+        if (self.move_count == 42 or len(self.getValidLocations()) == 0) :
             return True
         return False
     def getValidLocations(self):
@@ -397,48 +397,50 @@ class Board:
         score = 0
 
         # score center column
-        # center_array = [sl.Slot(i) for i in list(board.grid[:, (7 // 2)])]  # Get center array by dividing number of columns
-        # center_count = center_array.count(board.turn)
-        centerCount = 0
-        for i in range(6):
-            if (self.grid[3][i].state == self.turn):
-                centerCount += 1
-        score += centerCount * 3
-        print("Score of Central Column " + self.turn + ":" + str(score))
+        # centerCount = 0
+
+        # for i in range(6):
+        #     if (self.grid[3][i].state == self.turn):
+        #         centerCount += 1
+        # score += centerCount * 3
+        # print("Score of Central Column " + self.turn + ":" + str(score))
 
         # score horizontal
 
-        for r in range(6):
-            row_array = [sl.Slot(i) for i in list(board.grid[r])]
-            for c in range(4):  # COLUMN COUNT - 3
-                window = row_array[c:c + 4]  # Window length
-                score += self.evaluate_window(window, board.turn)
-        print("Score of Horizontal " + self.turn + ":" + str(score))
+        # for r in range(6):
+        #     row_array = [sl.Slot(i) for i in list(board.grid[r])]
+        #     for c in range(4):  # COLUMN COUNT - 3
+        #         window = row_array[c:c + 4]  # Window length
+        #         score += self.evaluate_window(window, board.turn)
+        # print("Score of Horizontal " + self.turn + ":" + str(score))
 
         # score vertical
-        row_index = 0;
+        row_index = 0
         for c in range(7):  # Row_count - 3
             col_array = []
             for r in range(6):
-                col_array.append(board.grid[r][c])
-            row_index += 1
+                col_array.append(board.grid[r][c].state)
+            # print(col_array)
+            print("Column: " + str(c))
             for r in range(3):  # Column count  - 3
                 window = col_array[r:r + 4]
+                # print("Turn:" + str(board.turn))
                 score += self.evaluate_window(window, board.turn)
-        print("Score of Vertical " + self.turn + ":" + str(score))
-
-        # Score posiive sloped diagonal
-        for r in range(3):  # Rowcount - 3
-            for c in range(4):  # column count - 3
-                window = [board.grid[r + i][c + i] for i in range(4)]
-                score += self.evaluate_window(window, board.turn)
-        print("Score of Positive Diagonals " + self.turn + ":" + str(score))
-
-        for r in range(3):  # row count - 3
-            for c in range(4):  # row counr - 3
-                window = [board.grid[r + 3 - i][c + i] for i in range(4)]
-                score += self.evaluate_window(window, board.turn)
-        print("Score of Negative Diagonals " + self.turn + ":" + str(score))
+        print("Score:" + str(score))
+        # print("Score of Vertical " + self.turn + ":" + str(score))
+        #
+        # # Score posiive sloped diagonal
+        # for r in range(3):  # Rowcount - 3
+        #     for c in range(4):  # column count - 3
+        #         window = [board.grid[r + i][c + i] for i in range(4)]
+        #         score += self.evaluate_window(window, board.turn)
+        # print("Score of Positive Diagonals " + self.turn + ":" + str(score))
+        #
+        # for r in range(3):  # row count - 3
+        #     for c in range(4):  # row counr - 3
+        #         window = [board.grid[r + 3 - i][c + i] for i in range(4)]
+        #         score += self.evaluate_window(window, board.turn)
+        # print("Score of Negative Diagonals " + self.turn + ":" + str(score))
 
         return score
 
@@ -453,16 +455,17 @@ class Board:
         oppPiece = 0
 
         for i in range(len(window)):
-            if (window[i].state is "black"):
+            if (window[i] == 'black'):
                 accum += 1
-            if (window[i].state == piece):
+            if (window[i] == piece):
                 selfPiece += 1
-            if(window[i].state == opp_piece):
+            if(window[i] == opp_piece):
                 oppPiece += 1
-
+        # print("AI: " + str(selfPiece))
+        # print("Player: " + str(oppPiece))
 
         if selfPiece == 4:
-            score += 100
+            score += 1000
         elif selfPiece == 3 and accum == 1:
             score += 5
         elif selfPiece == 2 and accum == 2:
@@ -470,6 +473,7 @@ class Board:
         if oppPiece == 3 and accum == 1:
             score -= 4
         # print("Score of " + self.turn + ":" + str(score))
+        # print("Score: " + str(score))
 
         return score
 
@@ -587,5 +591,53 @@ class Board:
                 val = bestVal
                 bestCol = i
         return bestCol
+
+    def ai_check_win(self): # fix the turn = self.turn later
+        # check for 4 UP
+        turn = self.turn
+        for i in range(3):
+            for j in range(7):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i][j].state is turn:
+                        if self.grid[i+1][j].state is turn and self.grid[i+2][j].state is turn and  self.grid[i+3][j].state is turn:
+                            print(str(turn) + " wins up")
+
+                            return True
+            # check 4 across
+        for i in range(6):
+            for j in range(4):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i][j].state is turn:
+                        if self.grid[i][j + 1].state is turn and self.grid[i][j + 2].state is turn and self.grid[i][
+                            j + 3].state is turn:
+                            print(str(turn) + " wins across")
+                            # highlight win spaces
+
+                            return True
+
+                # check diagnoal to the right
+        for i in range(3):
+            for j in range(4):
+                if self.grid[i][j].state is not "black":
+                    if self.grid[i][j].state is turn:
+                        if self.grid[i + 1][j + 1].state is turn and self.grid[i + 2][j + 2].state is turn and \
+                                self.grid[i + 3][j + 3].state is turn:
+                            print(str(turn) + " wins diag right")
+                            # highlight win spaces
+
+                            return True
+
+                            # check diagnol to the left
+        for i in range(3):
+            for j in range(4):
+                if self.grid[5 - i][j].state is not "black":
+                    if self.grid[5 - i][j].state is turn:
+                        if self.grid[5 - i - 1][j + 1].state is turn and self.grid[5 - i - 2][
+                            j + 2].state is turn and self.grid[5 - i - 3][j + 3].state is turn:
+                            print(str(turn) + " wins diag left")
+                            # highlight win spaces
+
+                            return True
+        return False
 
 
