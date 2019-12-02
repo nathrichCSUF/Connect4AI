@@ -144,7 +144,7 @@ class Game:
                         pygame.display.update()
                         moved = True
 
-                    if self.game_board.ai_check_win():
+                    if self.game_board.check_win():
                         pygame.display.update()
                         pygame.event.pump()
                         time.sleep(2)

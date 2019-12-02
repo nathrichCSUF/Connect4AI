@@ -19,7 +19,7 @@ class AI:
                     return (None, 0)
             else:
                 return (None, board.score_position(board))
-        print(validLocations)
+        # print(validLocations)
         if isMaxiPlayer:
             # print("Entering Maxi Player Loop")
             highestVal = -1000
@@ -27,7 +27,7 @@ class AI:
             for col in validLocations:
                 r = board.obtainNextAvailRow(col)
                 selfCopy = copy.copy(board)
-                print("Col: " + str(col))
+                # print("Col: " + str(col))
                 selfCopy.grid[r][col].state = board.turn
                 value = self.minimax(selfCopy, (depth - 1), bestVal, minVal, False)[1]
 
@@ -35,12 +35,12 @@ class AI:
                 if value > highestVal:
                     highestVal = value
                     column = col
-                print("highestVal: " + str(highestVal))
+                # print("highestVal: " + str(highestVal))
                 # print("col: " + str(col))
                 bestVal = max(bestVal, highestVal)
                 if bestVal >= minVal:
                     break
-                print("Minimax Column: " + str(column))
+                # print("Minimax Column: " + str(column))
             return column, highestVal
 
 
