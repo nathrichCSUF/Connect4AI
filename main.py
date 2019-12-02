@@ -129,7 +129,8 @@ class Game:
                     moved = False
                     score = 0
                     while not moved:
-                        move, score = self.ai.minimax(self.game_board, 1, -1000000, 1000000, True)
+                        move, score = self.ai.minimax(self.game_board, 1, -1000, 1000, True)
+                        print("Column Move: " + str(move) + "\nScore: " + str(score))
                         # print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
                         # move = self.game_board.minimax(5, True)
@@ -137,13 +138,13 @@ class Game:
                             move += 1
                             self.game_board.button_position = move
 
-                        if self.game_board.check_valid_move():
-                            self.game_board.move()
-                            pygame.event.pump()
-                            pygame.display.update()
-                            moved = True
 
-                    if self.game_board.check_win():
+                        self.game_board.move()
+                        pygame.event.pump()
+                        pygame.display.update()
+                        moved = True
+
+                    if self.game_board.ai_check_win():
                         pygame.display.update()
                         pygame.event.pump()
                         time.sleep(2)
@@ -160,7 +161,6 @@ class Game:
                     #x = 10000000
                     #while(x):
                         #x = x-1
-                    print("Column Move: " + str(move) + " Turn " + str(self.game_board.turn) + " Score: " + str(score))
 
                     self.game_board.change_turn()
                     self.player = 1

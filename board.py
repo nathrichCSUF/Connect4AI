@@ -374,7 +374,7 @@ class Board:
         return 0
 
     def ifValidCol(self, col):
-        return self.grid[6 - 1][col].state is "black"
+        return self.grid[6 - 1][col].state == "black"
 
     def gameFinished(self):
         if (self.move_count == 42 or len(self.getValidLocations()) == 0) :
@@ -397,13 +397,16 @@ class Board:
         score = 0
 
         # score center column
-        # centerCount = 0
-
-        # for i in range(6):
-        #     if (self.grid[3][i].state == self.turn):
-        #         centerCount += 1
-        # score += centerCount * 3
-        # print("Score of Central Column " + self.turn + ":" + str(score))
+        centerCount = 0
+        # print("Current Turn: " + str(self.turn))
+        centerAr = []
+        for i in range(6):
+            centerAr.append(self.grid[i][3].state)
+            if (self.grid[i][3].state is not "black"):
+                centerCount += 1
+        score += centerCount * 3
+        print(centerAr)
+        print("Amount of pieces in Central Column: " + str(centerCount) + ": Score: " + str(score))
 
         # score horizontal
 
@@ -421,12 +424,13 @@ class Board:
             for r in range(6):
                 col_array.append(board.grid[r][c].state)
             # print(col_array)
-            print("Column: " + str(c))
+            # print("Column: " + str(c))
             for r in range(3):  # Column count  - 3
                 window = col_array[r:r + 4]
                 # print("Turn:" + str(board.turn))
+                # print("Added Score: " + str(self.evaluate_window(window, board.turn)))
                 score += self.evaluate_window(window, board.turn)
-        print("Score:" + str(score))
+        # print("Score:" + str(score))
         # print("Score of Vertical " + self.turn + ":" + str(score))
         #
         # # Score posiive sloped diagonal
@@ -441,7 +445,7 @@ class Board:
         #         window = [board.grid[r + 3 - i][c + i] for i in range(4)]
         #         score += self.evaluate_window(window, board.turn)
         # print("Score of Negative Diagonals " + self.turn + ":" + str(score))
-
+        print("Score in Score_Position: " + str(score))
         return score
 
     def evaluate_window(self, window, piece):
@@ -474,7 +478,7 @@ class Board:
             score -= 4
         # print("Score of " + self.turn + ":" + str(score))
         # print("Score: " + str(score))
-
+        # print("Score at Evaluate Window: " + str(score))
         return score
 
     # def minimax(board, depth, bestVal, minVal, isMaxiPlayer):
