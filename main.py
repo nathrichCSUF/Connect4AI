@@ -130,7 +130,7 @@ class Game:
                     score = 0
                     while not moved:
                         move, score = self.ai.minimax(self.game_board, 1, -1000, 1000, True)
-                        print("Column Move: " + str(move) + "\nScore: " + str(score))
+                        print("Column Move: " + str(move))
                         # print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
                         # move = self.game_board.minimax(5, True)
@@ -161,7 +161,7 @@ class Game:
                     #x = 10000000
                     #while(x):
                         #x = x-1
-
+                    print("Score: " + str(score))
                     self.game_board.change_turn()
                     self.player = 1
 

@@ -48,7 +48,6 @@ class AI:
 
             print("Entering Mini Player Lopp")
             highestVal = 1000
-            # placeholder = 0
             # for i in range(7):
             #     print("Available Spot: [" + str(minValueRow[i]) + "," + str(minValueCol[i]) + "]")
 
