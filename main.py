@@ -133,7 +133,6 @@ class Game:
                         print("Column Move: " + str(move))
                         # print("Minmax Number:" + str(move))
                         self.game_board.button_position = move
-                        # move = self.game_board.minimax(5, True)
                         while self.game_board.check_valid_move() is False:
                             move += 1
                             self.game_board.button_position = move
