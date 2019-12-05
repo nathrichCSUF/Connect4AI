@@ -156,6 +156,7 @@ class Game:
                         self.settings.toggle_game_active()
                         pygame.mouse.set_visible(True)
                     pygame.event.pump()
+                    self.game_board.reset_select_button()
                     pygame.display.update()
                     #x = 10000000
                     #while(x):
