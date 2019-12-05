@@ -41,6 +41,8 @@ class Board:
         #dimensions and grid                       
         rows = 6
         columns = 7
+        pygame.mixer.init()
+        pygame.mixer.music.load("images/background-music.wav")
         self.grid = [ [sl.Slot(self.screen) for c in range(columns)] for r in range(rows)] 
 
         self.button_position = 0 # 0-6 column of where button is
@@ -95,8 +97,8 @@ class Board:
             for j in range(6):
                 self.screen.blit(self.background,(100*i,100*j+50))
         #loading selector Button 
-        self.screen.blit(self.red_select_button,(self.button_position,-25)) 
-
+        self.screen.blit(self.red_select_button,(self.button_position,-25))
+        pygame.mixer.music.play(-1)
 
     # Checks if there is an available space on the column
     def check_valid_move(self):
