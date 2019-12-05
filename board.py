@@ -128,6 +128,7 @@ class Board:
     # select button with checks on bounds
     def move_select_button(self,direction):
         # Valid move Clear last button --> update position --> place new button
+        
         self.screen.blit(self.clear_select_button,(self.button_position*100,-25))
         if direction is "right":
             if self.button_position < 6:    self.button_position += 1      
@@ -142,7 +143,9 @@ class Board:
         else:
             self.screen.blit(self.select_button,(self.button_position*100,-25))
 
-
+    def reset_select_button(self):
+        for i in range(7):
+            self.screen.blit(self.clear_select_button,(i*100,-25))
     # check the board to win (theres an easier way to do this) from last move?
     def check_win(self): # fix the turn = self.turn later
         # check for 4 UP 
