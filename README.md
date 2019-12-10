@@ -8,6 +8,7 @@ Connect4AI is a Player v Player and Player v AI Connect-4 game, where the aim is
 #### Directions:
 - Download as .ZIP, extract into a folder.
 - Right-click folder, and select 'Open in Terminal'.
+- Install Python 3.7 from list of downloads https://www.python.org/downloads/
 - Put 'pip install pygame' in terminal and press enter.
 - Put 'python3 main.py' in terminal and press enter.
 - Enjoy!
