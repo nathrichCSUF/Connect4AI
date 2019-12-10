@@ -1,8 +1,8 @@
 ### Connect4AI
-Connect4AI is a Player v Player and Player v AI Connect-4 game, where the aim is to connect 4 pieces of the same color in vertical, horizontal or diagnol line. This game is exclusively developed by:
-[Yash Bhambhani](www.github.com/yash-b)
-[Dustin Vuong](www.github.com/itosken) 
-[Matthew Camarena](www.github.com/MatthewCamarena)
+Connect4AI is a Player v Player and Player v AI Connect-4 game, where the aim is to connect 4 pieces of the same color in vertical, horizontal or diagnol line. This game is exclusively developed by:    
+[Yash Bhambhani](www.github.com/yash-b)   
+[Dustin Vuong](www.github.com/itosken)   
+[Matthew Camarena](www.github.com/MatthewCamarena)   
 [Nathan Richards](www.github.com/nathrichCSUF)
 
 #### Directions:
